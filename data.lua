@@ -18,7 +18,7 @@ function minituarize(anim)
 end
 
 -- basic
-local mmi = {
+local mm_i = {
     type = "ammo",
     name = "micromissile",
     icon = "__lilys-mm__/graphics/icons/micromissile.png",
@@ -57,7 +57,7 @@ local mmi = {
     weight = 5 * kg
 }
 
-data:extend({mmi})
+data:extend({mm_i})
 
 --basic projectile
 local mm = {
@@ -121,7 +121,7 @@ data:extend({mm})
 
 
 -- homing
-local mmhi = {
+local mmh_i = {
     type = "ammo",
     name = "micromissile-homing",
     icon = "__lilys-mm__/graphics/icons/micromissile-homing.png",
@@ -160,7 +160,7 @@ local mmhi = {
     weight = 10 * kg
 }
 
-data:extend({ mmhi })
+data:extend({ mmh_i })
 
 -- homing projectile
 local mmh = {
@@ -223,7 +223,7 @@ data:extend({ mmh })
 
 
 -- explosive
-local mmei = {
+local mme_i = {
     type = "ammo",
     name = "micromissile-explosive",
     icon = "__lilys-mm__/graphics/icons/micromissile-explosive.png",
@@ -262,7 +262,7 @@ local mmei = {
     weight = 10 * kg
 }
 
-data:extend({ mmei })
+data:extend({ mme_i })
 
 --explosive projectile
 local mme = {
@@ -348,7 +348,7 @@ data:extend({ mme })
 
 
 -- incendiary
-local mmii = {
+local mmi_i = {
     type = "ammo",
     name = "micromissile-incendiary",
     icon = "__lilys-mm__/graphics/icons/micromissile-incendiary.png",
@@ -387,7 +387,7 @@ local mmii = {
     weight = 10 * kg
 }
 
-data:extend({ mmii })
+data:extend({ mmi_i })
 
 --incendiary projectile
 local mmi = {
@@ -492,7 +492,7 @@ end
 
 
 -- kinetic
-local mmki = {
+local mmk_i = {
     type = "ammo",
     name = "micromissile-kinetic",
     icon = "__lilys-mm__/graphics/icons/micromissile-kinetic.png",
@@ -532,7 +532,7 @@ local mmki = {
     weight = 10 * kg
 }
 
-data:extend({ mmki })
+data:extend({ mmk_i })
 
 --kinetic projectile
 local mmk = {
@@ -754,7 +754,7 @@ else
         -- technology
         {
             type = "technology",
-            name = "micromissiles",
+            name = "mass-rocketry",
             icon_size = 256,
             icon = "__lilys-mm__/graphics/technology/mass-rocketry.png",
             prerequisites = { "rocketry, utility-science-pack", "rocket-fuel", "low-density-structure" },
@@ -788,13 +788,93 @@ else
                 {
                     type = "unlock-recipe",
                     recipe = "micromissile-kinetic"
-                },
-                (mods["lilys-incendiaries"] and
-                    ({
-                        type = "unlock-recipe",
-                        recipe = "micromissile-incendiary"
-                    }) or ({})),
+                }
             }
         }
+    })
+end
+local tech = data.raw["technology"]["mass-rocketry"]
+if mods["lilys-incendiaries"] then
+    table.insert(tech.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-incendiary"
+    })
+end
+
+
+
+
+function make_pack(missile)
+    local pack = table.deepcopy(missile)
+    pack.name = missile.name .. "-pack"
+    pack.icon = string.gsub(missile.icon, ".png", "-pack.png")
+    pack.magazine_size = 20
+    pack.order = missile.order .. "-pack"
+    
+    pack.inventory_move_sound = item_sounds.ammo_large_inventory_move
+    pack.pick_sound = item_sounds.ammo_large_inventory_move
+    pack.drop_sound = item_sounds.ammo_large_inventory_move
+    pack.stack_size = missile.stack_size / 10
+    pack.weight = missile.weight * 20
+    return pack
+end
+    
+
+function make_pack_recipe(missile)
+    local recipe = {
+        type = "recipe",
+        name = missile.name .. "-pack",
+        subgroup = "ammo",
+        allow_productivity = false,
+        enabled = false,
+        energy_required = 1,
+        ingredients =
+        {
+            { type = "item", name = missile.name, amount = 20 }
+        },
+        results = { { type = "item", name = missile.name .. "-pack", amount = 1 } }
+    }
+    return recipe
+end
+
+--packs
+data.extend({
+    make_pack(mm_i),
+    make_pack(mmh_i),
+    make_pack(mme_i),
+    make_pack(mmk_i),
+    make_pack_recipe(mm_i),
+    make_pack_recipe(mmh_i),
+    make_pack_recipe(mme_i),
+    make_pack_recipe(mmk_i),
+})
+if mods["lilys-incendiaries"] then
+    data.extend({
+    make_pack(mmi_i),
+    make_pack_recipe(mmi_i),
+})
+end
+
+
+table.insert(tech.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-pack"
+})
+table.insert(tech.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-homing-pack"
+})
+table.insert(tech.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-explosive-pack"
+})
+table.insert(tech.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-kinetic-pack"
+})
+if mods["lilys-incendiaries"] then
+    table.insert(tech.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-incendiary-pack"
     })
 end
