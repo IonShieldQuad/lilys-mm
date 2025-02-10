@@ -1,0 +1,800 @@
+local item_sounds = require("__base__.prototypes.item_sounds")
+local sounds = require("__base__.prototypes.entity.sounds")
+
+
+function minituarize(anim)
+    if anim.layers then
+        for _, layer in ipairs(anim.layers) do
+            if layer.scale then
+                layer.scale = layer.scale * 0.6
+            end
+        end
+    else
+        if anim.scale then
+            anim.scale = anim.scale * 0.6
+        end
+    end
+    return anim
+end
+
+-- basic
+local mmi = {
+    type = "ammo",
+    name = "micromissile",
+    icon = "__lilys-mm__/graphics/icons/micromissile.png",
+    ammo_category = "rocket",
+    ammo_type =
+    {
+        target_type = "position",
+        range_modifier = 1.4,
+        cooldown_modifier = 0.1,
+        action =
+        {
+            type = "direct",
+            action_delivery =
+            {
+                type = "projectile",
+                projectile = "micromissile",
+                starting_speed = 0.4,
+                starting_speed_deviation = 0.25,
+                direction_deviation = 0.1,
+                range_deviation = 0.1,
+                max_range = 200,
+                source_effects =
+                {
+                    type = "create-entity",
+                    entity_name = "explosion-hit"
+                }
+            }
+        }
+    },
+    subgroup = "ammo",
+    order = "d[rocket-launcher]-e[micromissile]",
+    inventory_move_sound = item_sounds.ammo_small_inventory_move,
+    pick_sound = item_sounds.ammo_small_inventory_move,
+    drop_sound = item_sounds.ammo_small_inventory_move,
+    stack_size = 1000,
+    weight = 5 * kg
+}
+
+data:extend({mmi})
+
+--basic projectile
+local mm = {
+    type = "projectile",
+    name = "micromissile",
+    flags = { "not-on-map" },
+    hidden = true,
+    acceleration = 0.1,
+    turn_speed = 0.1,
+    force_condition = "not-same",
+    --turning_speed_increases_exponentially_with_projectile_speed = true,
+    collision_box = { { -0.5, -0.3 }, { 0.5, 0.3 } },
+    action = {
+        type = "direct",
+        action_delivery =
+        {
+            type = "instant",
+            target_effects =
+            {
+                {
+                    type = "create-entity",
+                    entity_name = "explosion"
+                },
+                {
+                    type = "damage",
+                    damage = { amount = 40, type = "explosion" }
+                },
+                {
+                    type = "create-entity",
+                    entity_name = "small-scorchmark-tintable",
+                    check_buildability = true
+                },
+                {
+                    type = "invoke-tile-trigger",
+                    repeat_count = 1
+                },
+                {
+                    type = "destroy-decoratives",
+                    from_render_layer = "decorative",
+                    to_render_layer = "object",
+                    include_soft_decoratives = true, -- soft decoratives are decoratives with grows_through_rail_path = true
+                    include_decals = false,
+                    invoke_decorative_trigger = true,
+                    decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
+                    radius = 0.5               -- large radius for demostrative purposes
+                }
+            }
+        }
+    },
+    --light = {intensity = 0.5, size = 4},
+    animation = require("__base__.prototypes.entity.rocket-projectile-pictures").animation({ 1, 0.8, 0.3 }),
+    shadow = require("__base__.prototypes.entity.rocket-projectile-pictures").shadow,
+    smoke = require("__base__.prototypes.entity.rocket-projectile-pictures").smoke,
+}
+
+
+mm.animation = minituarize(mm.animation)
+mm.shadow = minituarize(mm.shadow)
+data:extend({mm})
+
+
+
+-- homing
+local mmhi = {
+    type = "ammo",
+    name = "micromissile-homing",
+    icon = "__lilys-mm__/graphics/icons/micromissile-homing.png",
+    ammo_category = "rocket",
+    ammo_type =
+    {
+        target_type = "entity",
+        range_modifier = 1.2,
+        cooldown_modifier = 0.1,
+        action =
+        {
+            type = "direct",
+            action_delivery =
+            {
+                type = "projectile",
+                projectile = "micromissile-homing",
+                starting_speed = 0.4,
+                starting_speed_deviation = 0.25,
+                direction_deviation = 0.2,
+                range_deviation = 0.2,
+                max_range = 200,
+                source_effects =
+                {
+                    type = "create-entity",
+                    entity_name = "explosion-hit"
+                }
+            }
+        }
+    },
+    subgroup = "ammo",
+    order = "d[rocket-launcher]-f[micromissile-homing]",
+    inventory_move_sound = item_sounds.ammo_small_inventory_move,
+    pick_sound = item_sounds.ammo_small_inventory_move,
+    drop_sound = item_sounds.ammo_small_inventory_move,
+    stack_size = 1000,
+    weight = 10 * kg
+}
+
+data:extend({ mmhi })
+
+-- homing projectile
+local mmh = {
+    type = "projectile",
+    name = "micromissile-homing",
+    flags = { "not-on-map" },
+    hidden = true,
+    acceleration = 0.1,
+    turn_speed = 0.1,
+    --turning_speed_increases_exponentially_with_projectile_speed = true,
+    action =
+    {
+        type = "direct",
+        action_delivery =
+        {
+            type = "instant",
+            target_effects =
+            {
+                {
+                    type = "create-entity",
+                    entity_name = "explosion"
+                },
+                {
+                    type = "damage",
+                    damage = { amount = 40, type = "explosion" }
+                },
+                {
+                    type = "create-entity",
+                    entity_name = "small-scorchmark-tintable",
+                    check_buildability = true
+                },
+                {
+                    type = "invoke-tile-trigger",
+                    repeat_count = 1
+                },
+                {
+                    type = "destroy-decoratives",
+                    from_render_layer = "decorative",
+                    to_render_layer = "object",
+                    include_soft_decoratives = true, -- soft decoratives are decoratives with grows_through_rail_path = true
+                    include_decals = false,
+                    invoke_decorative_trigger = true,
+                    decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
+                    radius = 0.5                           -- large radius for demostrative purposes
+                }
+            }
+        }
+    },
+    --light = {intensity = 0.5, size = 4},
+    animation = require("__base__.prototypes.entity.rocket-projectile-pictures").animation({ 1, 0.8, 0.3 }),
+    shadow = require("__base__.prototypes.entity.rocket-projectile-pictures").shadow,
+    smoke = require("__base__.prototypes.entity.rocket-projectile-pictures").smoke,
+}
+
+
+mmh.animation = minituarize(mmh.animation)
+mmh.shadow = minituarize(mmh.shadow)
+data:extend({ mmh })
+
+
+
+-- explosive
+local mmei = {
+    type = "ammo",
+    name = "micromissile-explosive",
+    icon = "__lilys-mm__/graphics/icons/micromissile-explosive.png",
+    ammo_category = "rocket",
+    ammo_type =
+    {
+        target_type = "position",
+        range_modifier = 1.2,
+        cooldown_modifier = 0.1,
+        action =
+        {
+            type = "direct",
+            action_delivery =
+            {
+                type = "projectile",
+                projectile = "micromissile-explosive",
+                starting_speed = 0.4,
+                starting_speed_deviation = 0.25,
+                direction_deviation = 0.15,
+                range_deviation = 0.15,
+                max_range = 200,
+                source_effects =
+                {
+                    type = "create-entity",
+                    entity_name = "explosion-hit"
+                }
+            }
+        }
+    },
+    subgroup = "ammo",
+    order = "d[rocket-launcher]-f[micromissile-explosive]",
+    inventory_move_sound = item_sounds.ammo_small_inventory_move,
+    pick_sound = item_sounds.ammo_small_inventory_move,
+    drop_sound = item_sounds.ammo_small_inventory_move,
+    stack_size = 1000,
+    weight = 10 * kg
+}
+
+data:extend({ mmei })
+
+--explosive projectile
+local mme = {
+    type = "projectile",
+    name = "micromissile-explosive",
+    flags = { "not-on-map" },
+    hidden = true,
+    acceleration = 0.1,
+    turn_speed = 0.1,
+    force_condition = "not-same",
+    --turning_speed_increases_exponentially_with_projectile_speed = true,
+    collision_box = { { -0.5, -0.3 }, { 0.5, 0.3 } },
+    action = {
+      type = "direct",
+      action_delivery =
+      {
+        type = "instant",
+        target_effects =
+        {
+          {
+            type = "create-entity",
+            entity_name = "explosion"
+          },
+          {
+            type = "damage",
+            damage = {amount = 20, type = "explosion"}
+          },
+          {
+            type = "create-entity",
+            entity_name = "medium-scorchmark-tintable",
+            check_buildability = true
+          },
+          {
+            type = "invoke-tile-trigger",
+            repeat_count = 1
+          },
+          {
+            type = "destroy-decoratives",
+            from_render_layer = "decorative",
+            to_render_layer = "object",
+            include_soft_decoratives = true, -- soft decoratives are decoratives with grows_through_rail_path = true
+            include_decals = false,
+            invoke_decorative_trigger = true,
+            decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
+            radius = 2.5 -- large radius for demostrative purposes
+          },
+          {
+            type = "nested-result",
+            action =
+            {
+              type = "area",
+              radius = 3.5,
+              action_delivery =
+              {
+                type = "instant",
+                target_effects =
+                {
+                  {
+                    type = "damage",
+                    damage = {amount = 35, type = "explosion"}
+                  },
+                  {
+                    type = "create-entity",
+                    entity_name = "explosion"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    --light = {intensity = 0.5, size = 4},
+    animation = require("__base__.prototypes.entity.rocket-projectile-pictures").animation({ 1, 0.2, 0.2 }),
+    shadow = require("__base__.prototypes.entity.rocket-projectile-pictures").shadow,
+    smoke = require("__base__.prototypes.entity.rocket-projectile-pictures").smoke,
+}
+
+
+mme.animation = minituarize(mme.animation)
+mme.shadow = minituarize(mme.shadow)
+data:extend({ mme })
+
+
+-- incendiary
+local mmii = {
+    type = "ammo",
+    name = "micromissile-incendiary",
+    icon = "__lilys-mm__/graphics/icons/micromissile-incendiary.png",
+    ammo_category = "rocket",
+    ammo_type =
+    {
+        target_type = "position",
+        range_modifier = 1.2,
+        cooldown_modifier = 0.1,
+        action =
+        {
+            type = "direct",
+            action_delivery =
+            {
+                type = "projectile",
+                projectile = "micromissile-incendiary",
+                starting_speed = 0.4,
+                starting_speed_deviation = 0.25,
+                direction_deviation = 0.15,
+                range_deviation = 0.15,
+                max_range = 200,
+                source_effects =
+                {
+                    type = "create-entity",
+                    entity_name = "explosion-hit"
+                }
+            }
+        }
+    },
+    subgroup = "ammo",
+    order = "d[rocket-launcher]-f[micromissile-incendiary]",
+    inventory_move_sound = item_sounds.ammo_small_inventory_move,
+    pick_sound = item_sounds.ammo_small_inventory_move,
+    drop_sound = item_sounds.ammo_small_inventory_move,
+    stack_size = 1000,
+    weight = 10 * kg
+}
+
+data:extend({ mmii })
+
+--incendiary projectile
+local mmi = {
+    type = "projectile",
+    name = "micromissile-incendiary",
+    flags = { "not-on-map" },
+    hidden = true,
+    acceleration = 0.1,
+    turn_speed = 0.1,
+    force_condition = "not-same",
+    --turning_speed_increases_exponentially_with_projectile_speed = true,
+    collision_box = { { -0.5, -0.3 }, { 0.5, 0.3 } },
+    action = {
+        type = "direct",
+        action_delivery =
+        {
+            type = "instant",
+            target_effects =
+            {
+                {
+                    type = "create-entity",
+                    entity_name = "explosion"
+                },
+                {
+                    type = "damage",
+                    damage = { amount = 10, type = "explosion" }
+                }, 
+                {
+                type = "damage",
+                damage = { amount = 20, type = "fire" }
+                },
+                {
+                    type = "create-entity",
+                    entity_name = "medium-scorchmark-tintable",
+                    check_buildability = true
+                },
+                {
+                    type = "invoke-tile-trigger",
+                    repeat_count = 1
+                },
+                {
+                    type = "create-sticker",
+                    sticker = "fire-sticker",
+                    show_in_tooltip = true
+                },
+                {
+                    type = "create-fire",
+                    entity_name = "fire-flame",
+                    show_in_tooltip = true,
+                    initial_ground_flame_count = 2
+                },
+                {
+                    type = "destroy-decoratives",
+                    from_render_layer = "decorative",
+                    to_render_layer = "object",
+                    include_soft_decoratives = true, -- soft decoratives are decoratives with grows_through_rail_path = true
+                    include_decals = false,
+                    invoke_decorative_trigger = true,
+                    decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
+                    radius = 2.5                   -- large radius for demostrative purposes
+                },
+                {
+                    type = "nested-result",
+                    action =
+                    {
+                        type = "area",
+                        radius = 3.5,
+                        action_delivery =
+                        {
+                            type = "instant",
+                            target_effects =
+                            {
+                                {
+                                    type = "damage",
+                                    damage = { amount = 35, type = "fire" }
+                                },
+                                {
+                                    type = "create-sticker",
+                                    sticker = "fire-sticker",
+                                    show_in_tooltip = true
+                                },
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    --light = {intensity = 0.5, size = 4},
+    animation = require("__base__.prototypes.entity.rocket-projectile-pictures").animation({ 1, 0.6, 0.0 }),
+    shadow = require("__base__.prototypes.entity.rocket-projectile-pictures").shadow,
+    smoke = require("__base__.prototypes.entity.rocket-projectile-pictures").smoke,
+}
+
+
+mmi.animation = minituarize(mmi.animation)
+mmi.shadow = minituarize(mmi.shadow)
+if mods["lilys-incendiaries"] then
+    data:extend({ mmi })
+end
+
+
+
+-- kinetic
+local mmki = {
+    type = "ammo",
+    name = "micromissile-kinetic",
+    icon = "__lilys-mm__/graphics/icons/micromissile-kinetic.png",
+    ammo_category = "rocket",
+    ammo_type =
+    {
+        target_type = "position",
+        range_modifier = 1.2,
+
+        cooldown_modifier = 0.1,
+        action =
+        {
+            type = "direct",
+            action_delivery =
+            {
+                type = "projectile",
+                projectile = "micromissile-kinetic",
+                starting_speed = 0.8,
+                starting_speed_deviation = 0.25,
+                direction_deviation = 0.05,
+                range_deviation = 0.05,
+                max_range = 200,
+                source_effects =
+                {
+                    type = "create-entity",
+                    entity_name = "explosion-hit"
+                }
+            }
+        }
+    },
+    subgroup = "ammo",
+    order = "d[rocket-launcher]-f[micromissile-kinetic]",
+    inventory_move_sound = item_sounds.ammo_small_inventory_move,
+    pick_sound = item_sounds.ammo_small_inventory_move,
+    drop_sound = item_sounds.ammo_small_inventory_move,
+    stack_size = 1000,
+    weight = 10 * kg
+}
+
+data:extend({ mmki })
+
+--kinetic projectile
+local mmk = {
+    type = "projectile",
+    name = "micromissile-kinetic",
+    flags = { "not-on-map" },
+    hidden = true,
+    acceleration = 0.1,
+    turn_speed = 0.1,
+    direction_only = true,
+    force_condition = "not-same",
+    --turning_speed_increases_exponentially_with_projectile_speed = true,
+    collision_box = { { -0.5, -0.3 }, { 0.5, 0.3 } },
+    piercing_damage = 500,
+    action = {
+        type = "direct",
+        action_delivery =
+        {
+            type = "instant",
+            target_effects =
+            {
+                {
+                    type = "create-entity",
+                    entity_name = "explosion-hit",
+                    offsets = { { 0, 1 } },
+                    offset_deviation = { { -0.5, -0.5 }, { 0.5, 0.5 } }
+                },
+                {
+                    type = "damage",
+                    damage = { amount = 80, type = "physical" }
+                },
+                {
+                    type = "invoke-tile-trigger",
+                    repeat_count = 1
+                },
+                {
+                    type = "destroy-decoratives",
+                    from_render_layer = "decorative",
+                    to_render_layer = "object",
+                    include_soft_decoratives = true, -- soft decoratives are decoratives with grows_through_rail_path = true
+                    include_decals = false,
+                    invoke_decorative_trigger = true,
+                    decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
+                    radius = 0.5                           -- large radius for demostrative purposes
+                },
+            }
+        }
+    },
+    --light = {intensity = 0.5, size = 4},
+    animation = require("__base__.prototypes.entity.rocket-projectile-pictures").animation({ 0.4, 0.0, 0.5 }), 
+    shadow = require("__base__.prototypes.entity.rocket-projectile-pictures").shadow,
+    smoke = require("__base__.prototypes.entity.rocket-projectile-pictures").smoke,
+}
+
+
+mmk.animation = minituarize(mmk.animation)
+mmk.shadow = minituarize(mmk.shadow)
+data:extend({ mmk })
+
+
+--recipe basic
+data:extend({
+    {
+        type = "recipe",
+        name = "micromissile",
+        category = "advanced-crafting",
+        subgroup = "ammo",
+        allow_productivity = true,
+        enabled = false,
+        energy_required = 5,
+        ingredients =
+        {
+            { type = "item",  name = (mods["space-age"] and "carbon-fiber" or "low-density-structure"), amount = 2 },
+            { type = "item", name = "rocket-fuel",   amount = 1 },
+            { type = "item",  name = "explosives",   amount = 1 }
+        },
+        results = { { type = "item", name = "micromissile", amount = 10 } }
+    }
+})
+
+--recipe homing
+data:extend({
+    {
+        type = "recipe",
+        name = "micromissile-homing",
+        category = "advanced-crafting",
+        subgroup = "ammo",
+        allow_productivity = false,
+        enabled = false,
+        energy_required = 1,
+        ingredients =
+        {
+            { type = "item", name = "micromissile",    amount = 1 },
+            { type = "item", name = "processing-unit", amount = 1 }
+        },
+        results = { { type = "item", name = "micromissile-homing", amount = 1 } }
+    }
+})
+
+--recipe explosive
+data:extend({
+    {
+        type = "recipe",
+        name = "micromissile-explosive",
+        category = "advanced-crafting",
+        subgroup = "ammo",
+        allow_productivity = false,
+        enabled = false,
+        energy_required = 1,
+        ingredients =
+        {
+            { type = "item", name = "micromissile",    amount = 1 },
+            { type = "item", name = "explosives", amount = 1 }
+        },
+        results = { { type = "item", name = "micromissile-explosive", amount = 1 } }
+    }
+})
+
+--recipe incendiary
+if mods["lilys-incendiaries"] then
+data:extend({
+    {
+        type = "recipe",
+        name = "micromissile-incendiary",
+        category = (mods["space-age"] and "chemistry-or-cryogenics" or "chemistry"),
+        ---@diagnostic disable-next-line: missing-fields
+        recipe_tint = {
+            primary = { r = 1.000, g = 0.735, b = 0.643, a = 1.000 }, -- #ffbba4ff
+            secondary = { r = 0.749, g = 0.557, b = 0.490, a = 1.000 }, -- #bf8e7dff
+            tertiary = { r = 0.837, g = 0.637, b = 0.637, a = 1.000 }, -- #c2a2a2ff
+            quaternary = { r = 0.883, g = 0.283, b = 0.283, a = 1.000 }, -- #c84848ff
+            },
+        subgroup = "ammo",
+        allow_productivity = false,
+        enabled = false,
+        energy_required = 1,
+        ingredients =
+        {
+            { type = "item", name = "micromissile",    amount = 1 },
+            { type = "fluid", name = "light-oil", amount = 50 }
+        },
+        results = { { type = "item", name = "micromissile-incendiary", amount = 1 } }
+    }
+})
+end
+
+--recipe kinetic
+data:extend({
+    {
+        type = "recipe",
+        name = "micromissile-kinetic",
+        category = "advanced-crafting",
+        subgroup = "ammo",
+        allow_productivity = false,
+        enabled = false,
+        energy_required = 1,
+        ingredients =
+        {
+            { type = "item", name = "micromissile", amount = 1 },
+            { type = "item", name = (mods["space-age"] and "tungsten-plate" or "steel-plate"), amount = (mods["space-age"] and 1 or 2) }
+        },
+        results = { { type = "item", name = "micromissile-kinetic", amount = 1 } }
+    }
+})
+
+--technology
+if mods["space-age"] then
+    data.extend({
+        -- technology
+        {
+            type = "technology",
+            name = "mass-rocketry",
+            icon_size = 256,
+            icon = "__lilys-mm__/graphics/technology/mass-rocketry.png",
+            prerequisites = {"rocket-turret", "utility-science-pack",},
+            unit =
+            {
+                ingredients =
+                {
+                    { "automation-science-pack",   1 },
+                    { "logistic-science-pack",     1 },
+                    { "military-science-pack",     1 },
+                    { "chemical-science-pack",     1 },
+                    { "space-science-pack",        1 },
+                    { "utility-science-pack",        1 },
+                    { "agricultural-science-pack", 1 }
+                },
+                time = 30,
+                count = 1000
+            },
+            effects =
+            {
+                {
+                    type = "unlock-recipe",
+                    recipe = "micromissile"
+                },
+                {
+                    type = "unlock-recipe",
+                    recipe = "micromissile-homing"
+                },
+                {
+                    type = "unlock-recipe",
+                    recipe = "micromissile-explosive"
+                },
+                {
+                    type = "unlock-recipe",
+                    recipe = "micromissile-kinetic"
+                },
+                (mods["lilys-incendiaries"] and
+                ({
+                    type = "unlock-recipe",
+                    recipe = "micromissile-incendiary"
+                }) or ({})),
+            }
+        }
+    })
+else
+    data.extend({
+        -- technology
+        {
+            type = "technology",
+            name = "micromissiles",
+            icon_size = 256,
+            icon = "__lilys-mm__/graphics/technology/mass-rocketry.png",
+            prerequisites = { "rocketry, utility-science-pack", "rocket-fuel", "low-density-structure" },
+            unit =
+            {
+                ingredients =
+                {
+                    { "automation-science-pack",   1 },
+                    { "logistic-science-pack",     1 },
+                    { "military-science-pack",     1 },
+                    { "chemical-science-pack",     1 },
+                    { "utility-science-pack",      1 }
+                },
+                time = 30,
+                count = 1000
+            },
+            effects =
+            {
+                {
+                    type = "unlock-recipe",
+                    recipe = "micromissile"
+                },
+                {
+                    type = "unlock-recipe",
+                    recipe = "micromissile-homing"
+                },
+                {
+                    type = "unlock-recipe",
+                    recipe = "micromissile-explosive"
+                },
+                {
+                    type = "unlock-recipe",
+                    recipe = "micromissile-kinetic"
+                },
+                (mods["lilys-incendiaries"] and
+                    ({
+                        type = "unlock-recipe",
+                        recipe = "micromissile-incendiary"
+                    }) or ({})),
+            }
+        }
+    })
+end
