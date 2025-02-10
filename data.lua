@@ -387,7 +387,9 @@ local mmi_i = {
     weight = 10 * kg
 }
 
-data:extend({ mmi_i })
+if mods["lilys-incendiaries"] then
+    data:extend({ mmi_i })
+end
 
 --incendiary projectile
 local mmi = {
@@ -740,12 +742,7 @@ if mods["space-age"] then
                 {
                     type = "unlock-recipe",
                     recipe = "micromissile-kinetic"
-                },
-                (mods["lilys-incendiaries"] and
-                ({
-                    type = "unlock-recipe",
-                    recipe = "micromissile-incendiary"
-                }) or ({})),
+                }
             }
         }
     })
