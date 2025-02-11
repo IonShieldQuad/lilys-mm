@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.0
+Date: 2025-02-11
+  Changes:
+    - Added an option to add quantum processor to some missiles to make them homing too
+    - Buffed arc micromissiles a bit
+---------------------------------------------------------------------------------------------------
 Version: 1.1.1
 Date: 2025-02-11
   Changes:

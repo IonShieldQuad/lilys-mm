@@ -683,16 +683,19 @@ mma = {
                     action = {
                         type = "area",
                         radius = 2.5,
+                        trigger_from_target = true,
                         action_delivery = {
                             {
                                 type = "chain",
                                 chain = "chain-micromissile-arc"
-                            }--[[,
+                            },
                             {
                                 type = "beam",
                                 add_to_shooter = false,
-                                beam = "micromissile-arc-chain-beam-bounce"
-                            }--]]
+                                beam = "micromissile-arc-chain-beam-bounce",
+                                duration = 20,
+                                max_length = 8
+                            }
                         }
                     }
                 },
@@ -1070,3 +1073,164 @@ if mods["space-age"] then
         recipe = "micromissile-arc-pack"
     })
 end
+
+
+--q-homing section
+
+-- only works on single missiles, not packs
+function make_q_homing(item, projectile, special)
+    local q = table.deepcopy(item)
+    q.name = item.name .. "-q"
+    q.icon = string.gsub(item.icon, ".png", "-q.png")
+    q.order = item.order .. "-q"
+    q.ammo_type.target_type = "entity"
+    q.ammo_type.action.action_delivery.projectile = q.ammo_type.action.action_delivery.projectile .. "-q"
+
+    local p = table.deepcopy(projectile)
+    p.name = projectile.name .. "-q"
+    p.direction_only = false
+    p.collision_box = {{0, 0}, {0, 0} }
+    if special then
+        p.action = {
+            type = "area",
+            trigger_from_target = true,
+            radius = 0,
+            action_delivery = item.ammo_type.action.action_delivery
+            --[[action_delivery =
+            {
+                type = "projectile",
+                projectile = projectile.name,
+                starting_speed = item.starting_speed,
+                starting_speed_deviation = projectile.starting_speed_deviation,
+                direction_deviation = projectile.direction_deviation,
+                range_deviation = projectile.range_deviation,
+                max_range = projectile.max_range,
+            }--]]
+    }
+    end
+    return {q, p}
+end
+
+function make_q_recipe(missile)
+    local recipe = {
+        type = "recipe",
+        name = missile.name .. "-q",
+        category = "cryogenics",
+        subgroup = "ammo",
+        allow_productivity = false,
+        enabled = false,
+        energy_required = 1,
+        ingredients =
+        {
+            { type = "item", name = missile.name, amount = 1 },
+            { type = "item", name = "quantum-processor", amount = 1 }
+        },
+        results = { { type = "item", name = missile.name .. "-q", amount = 1 } }
+    }
+    return recipe
+end
+
+--q-homing
+if (settings.startup["enable-q-homing"] and mods["space-age"]) then 
+    local mme_q = make_q_homing(mme_i, mme)
+    local mmk_q = make_q_homing(mmk_i, mmk)
+    local mma_q = make_q_homing(mma_i, mma)
+    data:extend(mme_q)
+    data:extend(mmk_q)
+    data:extend(mma_q)
+
+    data:extend({
+        make_q_recipe(mme_i),
+        make_q_recipe(mmk_i),
+        make_q_recipe(mma_i)
+    })
+
+    data:extend({
+        make_pack(mme_q[1]),
+        make_pack(mmk_q[1]),
+        make_pack(mma_q[1]),
+        make_pack_recipe(mme_q[1]),
+        make_pack_recipe(mmk_q[1]),
+        make_pack_recipe(mma_q[1])
+    })
+
+    if mods["lilys-incendiaries"] then
+        local mmi_q = make_q_homing(mmi_i, mmi)
+        data:extend(mmi_q)
+
+        data:extend({
+            make_q_recipe(mmi_i),
+            make_pack(mmi_q[1]),
+            make_pack_recipe(mmi_q[1])
+        })
+    end
+
+--technology
+    local q_rocketry = 
+    {
+        type = "technology",
+        name = "q-rocketry",
+        icon_size = 256,
+        icon = "__lilys-mm__/graphics/technology/q-rocketry.png",
+        prerequisites = { "mass-rocketry", "quantum-processor", "cryogenic-science-pack"},
+        unit =
+        {
+            ingredients =
+            {
+                { "automation-science-pack",   1 },
+                { "logistic-science-pack",     1 },
+                { "military-science-pack",     1 },
+                { "chemical-science-pack",     1 },
+                { "space-science-pack",        1 },
+                { "utility-science-pack",      1 },
+                { "agricultural-science-pack", 1 },
+                { "cryogenic-science-pack",    1 }
+            },
+            time = 60,
+            count = 5000
+        },
+        effects =
+        {
+            {
+                type = "unlock-recipe",
+                recipe = "micromissile-explosive-q"
+            },
+            {
+                type = "unlock-recipe",
+                recipe = "micromissile-kinetic-q"
+            },
+            {
+                type = "unlock-recipe",
+                recipe = "micromissile-arc-q"
+            },
+            {
+                type = "unlock-recipe",
+                recipe = "micromissile-explosive-q-pack"
+            },
+            {
+                type = "unlock-recipe",
+                recipe = "micromissile-kinetic-q-pack"
+            },
+            {
+                type = "unlock-recipe",
+                recipe = "micromissile-arc-q-pack"
+            }
+        }
+    }
+
+    if mods["lilys-incendiaries"] then
+        table.insert(q_rocketry.effects, {
+            type = "unlock-recipe",
+            recipe = "micromissile-incendiary-q"
+        })
+        table.insert(q_rocketry.effects, {
+            type = "unlock-recipe",
+            recipe = "micromissile-incendiary-q-pack"
+        })
+    end
+
+    data.extend({q_rocketry})
+
+end
+
+
