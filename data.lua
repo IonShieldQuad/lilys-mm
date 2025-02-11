@@ -594,6 +594,162 @@ mmk.animation = minituarize(mmk.animation)
 mmk.shadow = minituarize(mmk.shadow)
 data:extend({ mmk })
 
+local mma_i = {}
+local mma = {}
+if mods["space-age"] then
+-- arc
+mma_i = {
+    type = "ammo",
+    name = "micromissile-arc",
+    icon = "__lilys-mm__/graphics/icons/micromissile-arc.png",
+    ammo_category = "rocket",
+    ammo_type =
+    {
+        target_type = "position",
+        range_modifier = 1.2,
+
+        cooldown_modifier = 0.1,
+        action =
+        {
+            type = "direct",
+            action_delivery =
+            {
+                type = "projectile",
+                projectile = "micromissile-arc",
+                starting_speed = 0.4,
+                starting_speed_deviation = 0.25,
+                direction_deviation = 0.1,
+                range_deviation = 0.1,
+                max_range = 200,
+                source_effects =
+                {
+                    type = "create-entity",
+                    entity_name = "explosion-hit"
+                }
+            }
+        }
+    },
+    subgroup = "ammo",
+    order = "d[rocket-launcher]-f[micromissile-arc]",
+    inventory_move_sound = item_sounds.ammo_small_inventory_move,
+    pick_sound = item_sounds.ammo_small_inventory_move,
+    drop_sound = item_sounds.ammo_small_inventory_move,
+    stack_size = 1000,
+    weight = 10 * kg
+}
+
+data:extend({ mma_i })
+
+local beam = table.deepcopy(data.raw["beam"]["chain-tesla-gun-beam-bounce"])
+beam.name = "micromissile-arc-chain-beam-bounce"
+for _, effect in ipairs(beam.action.action_delivery.target_effects) do
+    if effect.type == "damage" then
+            effect.damage = { amount = 3, type = "electric" }
+    end
+end
+local arc = table.deepcopy(data.raw["chain-active-trigger"]["chain-tesla-gun-chain"])
+arc.name = "chain-micromissile-arc"
+arc.max_jumps = 2
+arc.max_range_per_jump = 8
+arc.fork_chance = 0.2
+arc.jump_delay_ticks = 0
+local arcdel = arc.action.action_delivery
+arcdel.beam = "micromissile-arc-chain-beam-bounce"
+arcdel.max_range = 8.5
+arcdel.duration = 20
+data:extend({beam, arc})
+
+
+--arc projectile
+mma = {
+    type = "projectile",
+    name = "micromissile-arc",
+    flags = { "not-on-map" },
+    hidden = true,
+    acceleration = 0.1,
+    turn_speed = 0.1,
+    force_condition = "not-same",
+    --turning_speed_increases_exponentially_with_projectile_speed = true,
+    collision_box = { { -0.5, -0.3 }, { 0.5, 0.3 } },
+    action = {
+        type = "direct",
+        action_delivery =
+        {
+            type = "instant",
+            target_effects =
+            {
+                {
+                    type = "nested-result",
+                    action = {
+                        type = "area",
+                        radius = 2.5,
+                        action_delivery = {
+                            {
+                                type = "chain",
+                                chain = "chain-micromissile-arc"
+                            }--[[,
+                            {
+                                type = "beam",
+                                add_to_shooter = false,
+                                beam = "micromissile-arc-chain-beam-bounce"
+                            }--]]
+                        }
+                    }
+                },
+                {
+                    type = "damage",
+                    damage = { amount = 5, type = "physical" }
+                },
+                {
+                    type = "damage",
+                    damage = { amount = 20, type = "electric" }
+                },
+                {
+                    type = "push-back",
+                    distance = 0.5
+                },
+                {
+                    type = "create-sticker",
+                    sticker = "tesla-turret-stun"
+                },
+                {
+                    type = "create-sticker",
+                    sticker = "tesla-turret-slow"
+                },
+                {
+                    type = "create-entity",
+                    entity_name = "small-scorchmark-tintable",
+                    check_buildability = true
+                },
+                {
+                    type = "invoke-tile-trigger",
+                    repeat_count = 1
+                },
+                {
+                    type = "destroy-decoratives",
+                    from_render_layer = "decorative",
+                    to_render_layer = "object",
+                    include_soft_decoratives = true, -- soft decoratives are decoratives with grows_through_rail_path = true
+                    include_decals = false,
+                    invoke_decorative_trigger = true,
+                    decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
+                    radius = 0.5                           -- large radius for demostrative purposes
+                },
+            }
+        }
+    },
+    --light = {intensity = 0.5, size = 4},
+    animation = require("__base__.prototypes.entity.rocket-projectile-pictures").animation({ 0.0, 0.5, 1.0 }),
+    shadow = require("__base__.prototypes.entity.rocket-projectile-pictures").shadow,
+    smoke = require("__base__.prototypes.entity.rocket-projectile-pictures").smoke,
+}
+
+
+mma.animation = minituarize(mma.animation)
+mma.shadow = minituarize(mma.shadow)
+data:extend({ mma })
+
+end
 
 --recipe basic
 data:extend({
@@ -700,6 +856,27 @@ data:extend({
     }
 })
 
+if mods["space-age"] then
+--recipe arc
+data:extend({
+    {
+        type = "recipe",
+        name = "micromissile-arc",
+        category = "electromagnetics",
+        subgroup = "ammo",
+        allow_productivity = false,
+        enabled = false,
+        energy_required = 1,
+        ingredients =
+        {
+            { type = "item", name = "micromissile",    amount = 3 },
+            { type = "item", name = "supercapacitor", amount = 3 }
+        },
+        results = { { type = "item", name = "micromissile-arc", amount = 2 } }
+    }
+})
+end
+
 --technology
 if mods["space-age"] then
     data.extend({
@@ -797,6 +974,12 @@ if mods["lilys-incendiaries"] then
         recipe = "micromissile-incendiary"
     })
 end
+if mods["space-age"] then
+    table.insert(tech.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-arc"
+    })
+end
 
 
 
@@ -851,6 +1034,12 @@ if mods["lilys-incendiaries"] then
     make_pack_recipe(mmi_i),
 })
 end
+if mods["space-age"] then
+    data.extend({
+    make_pack(mma_i),
+    make_pack_recipe(mma_i),
+})
+end
 
 
 table.insert(tech.effects, {
@@ -873,5 +1062,11 @@ if mods["lilys-incendiaries"] then
     table.insert(tech.effects, {
         type = "unlock-recipe",
         recipe = "micromissile-incendiary-pack"
+    })
+end
+if mods["space-age"] then
+    table.insert(tech.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-arc-pack"
     })
 end
