@@ -464,7 +464,8 @@ local mmi = {
                             {
                                 {
                                     type = "damage",
-                                    damage = { amount = 35, type = "fire" }
+                                    damage = { amount = 35, type = "fire" },
+                                    apply_damage_to_trees = false
                                 },
                                 {
                                     type = "create-sticker",

@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.3
+Date: 2025-02-13
+  Changes:
+    - Incendiary micromissile explosion no longer damages trees (it will, howewer, set them on fire)
+---------------------------------------------------------------------------------------------------
 Version: 1.2.2
 Date: 2025-02-12
   Changes:
