@@ -970,6 +970,20 @@ else
     })
 end
 local tech = data.raw["technology"]["mass-rocketry"]
+--technology
+local tech_2 = table.deepcopy(data.raw["technology"]["mass-rocketry"])
+tech_2.name = "mass-rocketry-2"
+tech_2.icon = "__lilys-mm__/graphics/technology/mass-rocketry-2.png"
+tech_2.prerequisites = { "mass-rocketry" }
+tech_2.unit.count = 10000
+tech_2.effects = {}
+
+if mods["space-age"] then
+    table.insert(tech_2.prerequisites, "metallurgic-science-pack")
+    table.insert(tech_2.prerequisites, "electromagnetic-science-pack")
+    table.insert(tech_2.unit.ingredients, {"metallurgic-science-pack", 1})
+    table.insert(tech_2.unit.ingredients, {"electromagnetic-science-pack", 1})
+end
 
 table.insert(tech.effects, {
     type = "unlock-recipe",
@@ -1019,25 +1033,94 @@ function make_pack_recipe(missile)
     return recipe
 end
 
+function make_swarm_pack(missile)
+    local pack = table.deepcopy(missile)
+    pack.name = missile.name .. "-swarm-pack"
+    pack.icon = nil
+    pack.icons = {
+        {
+            icon = string.gsub(missile.icon, ".png", "-pack.png"),
+            --scale = 1
+        },
+        {
+            icon = "__base__/graphics/icons/signal/signal-stack-size.png",
+            tint = {0.70, 0.70, 0.70, 0.70},
+            scale = 0.4
+        },
+    }
+    pack.magazine_size = 20 / 4
+    pack.order = missile.order .. "-swarm-pack"
+
+    pack.ammo_type.action.repeat_count = 4
+    if missile.ammo_type.target_type == "entity" then
+        pack.turn_speed = 0.01
+        pack.ammo_type.action.action_delivery.direction_deviation = 4
+        pack.ammo_type.action.action_delivery.range_deviation = pack.ammo_type.action.action_delivery.range_deviation *
+        1.5
+    else
+        pack.turn_speed = 0.025
+        pack.ammo_type.action.action_delivery.direction_deviation = pack.ammo_type.action.action_delivery
+        .direction_deviation * 2
+        pack.ammo_type.action.action_delivery.range_deviation = pack.ammo_type.action.action_delivery.range_deviation *
+        1.5
+    end
+    
+
+
+    pack.inventory_move_sound = item_sounds.ammo_large_inventory_move
+    pack.pick_sound = item_sounds.ammo_large_inventory_move
+    pack.drop_sound = item_sounds.ammo_large_inventory_move
+    pack.stack_size = missile.stack_size / 10
+    pack.weight = missile.weight * 20
+    return pack
+end
+
+function make_swarm_pack_recipe(missile)
+    local recipe = {
+        type = "recipe",
+        name = missile.name .. "-swarm-pack",
+        subgroup = "ammo",
+        allow_productivity = false,
+        enabled = false,
+        energy_required = 1,
+        ingredients =
+        {
+            { type = "item", name = missile.name, amount = 20 }
+        },
+        results = { { type = "item", name = missile.name .. "-swarm-pack", amount = 1 } }
+    }
+    return recipe
+end
+
 --packs
 data.extend({
     make_pack(mm_i),
     make_pack(mmh_i),
     make_pack(mme_i),
     make_pack(mmk_i),
+    make_pack(mmi_i),
     make_pack_recipe(mm_i),
     make_pack_recipe(mmh_i),
     make_pack_recipe(mme_i),
     make_pack_recipe(mmk_i),
-})
-    data.extend({
-    make_pack(mmi_i),
     make_pack_recipe(mmi_i),
+    make_swarm_pack(mm_i),
+    make_swarm_pack(mmh_i),
+    make_swarm_pack(mme_i),
+    make_swarm_pack(mmk_i),
+    make_swarm_pack(mmi_i),
+    make_swarm_pack_recipe(mm_i),
+    make_swarm_pack_recipe(mmh_i),
+    make_swarm_pack_recipe(mme_i),
+    make_swarm_pack_recipe(mmk_i),
+    make_swarm_pack_recipe(mmi_i)
 })
 if mods["space-age"] then
     data.extend({
     make_pack(mma_i),
     make_pack_recipe(mma_i),
+    make_swarm_pack(mma_i),
+    make_swarm_pack_recipe(mma_i)
 })
 end
 
@@ -1068,6 +1151,48 @@ if mods["space-age"] then
         recipe = "micromissile-arc-pack"
     })
 end
+
+table.insert(tech_2.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-swarm-pack"
+})
+table.insert(tech_2.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-homing-swarm-pack"
+})
+table.insert(tech_2.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-explosive-swarm-pack"
+})
+table.insert(tech_2.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-kinetic-swarm-pack"
+})
+table.insert(tech_2.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-incendiary-swarm-pack"
+})
+if mods["space-age"] then
+    table.insert(tech_2.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-arc-swarm-pack"
+    })
+end
+
+data:extend({tech_2})
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 --q-homing section
@@ -1146,7 +1271,13 @@ if (settings.startup["enable-q-homing"] and mods["space-age"]) then
         make_pack(mma_q[1]),
         make_pack_recipe(mme_q[1]),
         make_pack_recipe(mmk_q[1]),
-        make_pack_recipe(mma_q[1])
+        make_pack_recipe(mma_q[1]),
+        make_swarm_pack(mme_q[1]),
+        make_swarm_pack(mmk_q[1]),
+        make_swarm_pack(mma_q[1]),
+        make_swarm_pack_recipe(mme_q[1]),
+        make_swarm_pack_recipe(mmk_q[1]),
+        make_swarm_pack_recipe(mma_q[1])
     })
 
 
@@ -1156,7 +1287,9 @@ if (settings.startup["enable-q-homing"] and mods["space-age"]) then
     data:extend({
         make_q_recipe(mmi_i),
         make_pack(mmi_q[1]),
-        make_pack_recipe(mmi_q[1])
+        make_pack_recipe(mmi_q[1]),
+        make_swarm_pack(mmi_q[1]),
+        make_swarm_pack_recipe(mmi_q[1])
     })
 
 
@@ -1167,7 +1300,7 @@ if (settings.startup["enable-q-homing"] and mods["space-age"]) then
         name = "q-rocketry",
         icon_size = 256,
         icon = "__lilys-mm__/graphics/technology/q-rocketry.png",
-        prerequisites = { "mass-rocketry", "quantum-processor", "cryogenic-science-pack"},
+        prerequisites = { "mass-rocketry-2", "quantum-processor", "cryogenic-science-pack"},
         unit =
         {
             ingredients =
@@ -1209,6 +1342,18 @@ if (settings.startup["enable-q-homing"] and mods["space-age"]) then
             {
                 type = "unlock-recipe",
                 recipe = "micromissile-arc-q-pack"
+            },
+            {
+                type = "unlock-recipe",
+                recipe = "micromissile-explosive-q-swarm-pack"
+            },
+            {
+                type = "unlock-recipe",
+                recipe = "micromissile-kinetic-q-swarm-pack"
+            },
+            {
+                type = "unlock-recipe",
+                recipe = "micromissile-arc-q-swarm-pack"
             }
         }
     }
@@ -1221,6 +1366,10 @@ if (settings.startup["enable-q-homing"] and mods["space-age"]) then
     table.insert(q_rocketry.effects, {
         type = "unlock-recipe",
         recipe = "micromissile-incendiary-q-pack"
+    })
+    table.insert(q_rocketry.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-incendiary-q-swarm-pack"
     })
     
 
