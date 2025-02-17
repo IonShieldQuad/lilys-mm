@@ -387,9 +387,9 @@ local mmi_i = {
     weight = 10 * kg
 }
 
-if mods["lilys-incendiaries"] then
-    data:extend({ mmi_i })
-end
+
+data:extend({ mmi_i })
+
 
 --incendiary projectile
 local mmi = {
@@ -488,9 +488,9 @@ local mmi = {
 
 mmi.animation = minituarize(mmi.animation)
 mmi.shadow = minituarize(mmi.shadow)
-if mods["lilys-incendiaries"] then
-    data:extend({ mmi })
-end
+
+data:extend({ mmi })
+
 
 
 
@@ -814,14 +814,12 @@ data:extend({
 })
 
 --recipe incendiary
-if mods["lilys-incendiaries"] then
 data:extend({
     {
         type = "recipe",
         name = "micromissile-incendiary",
         category = (mods["space-age"] and "chemistry-or-cryogenics" or "chemistry"),
-        ---@diagnostic disable-next-line: missing-fields
-        recipe_tint = {
+        crafting_machine_tint = {
             primary = { r = 1.000, g = 0.735, b = 0.643, a = 1.000 }, -- #ffbba4ff
             secondary = { r = 0.749, g = 0.557, b = 0.490, a = 1.000 }, -- #bf8e7dff
             tertiary = { r = 0.837, g = 0.637, b = 0.637, a = 1.000 }, -- #c2a2a2ff
@@ -839,7 +837,7 @@ data:extend({
         results = { { type = "item", name = "micromissile-incendiary", amount = 1 } }
     }
 })
-end
+
 
 --recipe kinetic
 data:extend({
@@ -972,12 +970,12 @@ else
     })
 end
 local tech = data.raw["technology"]["mass-rocketry"]
-if mods["lilys-incendiaries"] then
-    table.insert(tech.effects, {
-        type = "unlock-recipe",
-        recipe = "micromissile-incendiary"
-    })
-end
+
+table.insert(tech.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-incendiary"
+})
+
 if mods["space-age"] then
     table.insert(tech.effects, {
         type = "unlock-recipe",
@@ -1032,12 +1030,10 @@ data.extend({
     make_pack_recipe(mme_i),
     make_pack_recipe(mmk_i),
 })
-if mods["lilys-incendiaries"] then
     data.extend({
     make_pack(mmi_i),
     make_pack_recipe(mmi_i),
 })
-end
 if mods["space-age"] then
     data.extend({
     make_pack(mma_i),
@@ -1062,12 +1058,10 @@ table.insert(tech.effects, {
     type = "unlock-recipe",
     recipe = "micromissile-kinetic-pack"
 })
-if mods["lilys-incendiaries"] then
     table.insert(tech.effects, {
         type = "unlock-recipe",
         recipe = "micromissile-incendiary-pack"
     })
-end
 if mods["space-age"] then
     table.insert(tech.effects, {
         type = "unlock-recipe",
@@ -1155,16 +1149,16 @@ if (settings.startup["enable-q-homing"] and mods["space-age"]) then
         make_pack_recipe(mma_q[1])
     })
 
-    if mods["lilys-incendiaries"] then
-        local mmi_q = make_q_homing(mmi_i, mmi)
-        data:extend(mmi_q)
 
-        data:extend({
-            make_q_recipe(mmi_i),
-            make_pack(mmi_q[1]),
-            make_pack_recipe(mmi_q[1])
-        })
-    end
+    local mmi_q = make_q_homing(mmi_i, mmi)
+    data:extend(mmi_q)
+
+    data:extend({
+        make_q_recipe(mmi_i),
+        make_pack(mmi_q[1]),
+        make_pack_recipe(mmi_q[1])
+    })
+
 
 --technology
     local q_rocketry = 
@@ -1219,16 +1213,16 @@ if (settings.startup["enable-q-homing"] and mods["space-age"]) then
         }
     }
 
-    if mods["lilys-incendiaries"] then
-        table.insert(q_rocketry.effects, {
-            type = "unlock-recipe",
-            recipe = "micromissile-incendiary-q"
-        })
-        table.insert(q_rocketry.effects, {
-            type = "unlock-recipe",
-            recipe = "micromissile-incendiary-q-pack"
-        })
-    end
+    
+    table.insert(q_rocketry.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-incendiary-q"
+    })
+    table.insert(q_rocketry.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-incendiary-q-pack"
+    })
+    
 
     data.extend({q_rocketry})
 
