@@ -1033,9 +1033,12 @@ function make_pack_recipe(missile)
     return recipe
 end
 
-function make_swarm_pack(missile)
+function make_swarm_pack(missile, projectile, no_scatter)
     local pack = table.deepcopy(missile)
+    local proj = table.deepcopy(projectile)
+
     pack.name = missile.name .. "-swarm-pack"
+    proj.name = projectile.name .. "-swarm"
     pack.icon = nil
     pack.icons = {
         {
@@ -1050,29 +1053,66 @@ function make_swarm_pack(missile)
     }
     pack.magazine_size = 20 / 4
     pack.order = missile.order .. "-swarm-pack"
-
     pack.ammo_type.action.repeat_count = 4
-    if missile.ammo_type.target_type == "entity" then
-        pack.turn_speed = 0.01
-        pack.ammo_type.action.action_delivery.direction_deviation = 4
-        pack.ammo_type.action.action_delivery.range_deviation = pack.ammo_type.action.action_delivery.range_deviation *
-        1.5
-    else
-        pack.turn_speed = 0.025
-        pack.ammo_type.action.action_delivery.direction_deviation = pack.ammo_type.action.action_delivery
-        .direction_deviation * 2
-        pack.ammo_type.action.action_delivery.range_deviation = pack.ammo_type.action.action_delivery.range_deviation *
-        1.5
-    end
-    
 
+    if not no_scatter then
+
+        if missile.ammo_type.target_type == "entity" then
+            proj.turn_speed = 0.001
+            proj.turning_speed_increases_exponentially_with_projectile_speed = true
+            pack.ammo_type.action.action_delivery.direction_deviation = 4
+            pack.ammo_type.action.action_delivery.range_deviation = pack.ammo_type.action.action_delivery.range_deviation *
+            1.5
+        else
+            proj.turn_speed = 0.002
+            proj.turning_speed_increases_exponentially_with_projectile_speed = true
+            pack.ammo_type.action.action_delivery.direction_deviation = pack.ammo_type.action.action_delivery
+            .direction_deviation * 2
+            pack.ammo_type.action.action_delivery.range_deviation = pack.ammo_type.action.action_delivery.range_deviation *
+            1.5
+        end
+        
+        pack.ammo_type.action.action_delivery.projectile = pack.ammo_type.action.action_delivery.projectile .. "-swarm"
+
+        local act = pack.ammo_type.action
+        pack.ammo_type.action = {
+            type = "direct",
+            action_delivery = {
+                {
+                    type = "instant",
+                    target_effects = {
+                        {
+                            type = "nested-result",
+                            action = act
+                        }
+                    }
+                },
+                {
+                    type = "instant",
+                    source_effects = {
+                        {
+                            type = "script",
+                            effect_id = "swarm-micromissile-fired"
+                        }
+                    }
+                }
+            }
+        }
+    else
+
+        pack.ammo_type.action.action_delivery.direction_deviation = pack.ammo_type.action.action_delivery
+            .direction_deviation * 3
+        pack.ammo_type.action.action_delivery.range_deviation = pack.ammo_type.action.action_delivery.range_deviation *
+            2
+
+    end
 
     pack.inventory_move_sound = item_sounds.ammo_large_inventory_move
     pack.pick_sound = item_sounds.ammo_large_inventory_move
     pack.drop_sound = item_sounds.ammo_large_inventory_move
     pack.stack_size = missile.stack_size / 10
     pack.weight = missile.weight * 20
-    return pack
+    return {pack, proj}
 end
 
 function make_swarm_pack_recipe(missile)
@@ -1103,12 +1143,14 @@ data.extend({
     make_pack_recipe(mmh_i),
     make_pack_recipe(mme_i),
     make_pack_recipe(mmk_i),
-    make_pack_recipe(mmi_i),
-    make_swarm_pack(mm_i),
-    make_swarm_pack(mmh_i),
-    make_swarm_pack(mme_i),
-    make_swarm_pack(mmk_i),
-    make_swarm_pack(mmi_i),
+    make_pack_recipe(mmi_i)
+})
+    data:extend(make_swarm_pack(mm_i, mm))
+    data:extend(make_swarm_pack(mmh_i, mmh))
+    data:extend(make_swarm_pack(mme_i, mme))
+    data:extend(make_swarm_pack(mmk_i, mmk, true))
+    data:extend(make_swarm_pack(mmi_i, mmi))
+    data:extend({
     make_swarm_pack_recipe(mm_i),
     make_swarm_pack_recipe(mmh_i),
     make_swarm_pack_recipe(mme_i),
@@ -1119,9 +1161,9 @@ if mods["space-age"] then
     data.extend({
     make_pack(mma_i),
     make_pack_recipe(mma_i),
-    make_swarm_pack(mma_i),
     make_swarm_pack_recipe(mma_i)
 })
+data.extend(make_swarm_pack(mma_i, mma))
 end
 
 
@@ -1272,13 +1314,14 @@ if (settings.startup["enable-q-homing"] and mods["space-age"]) then
         make_pack_recipe(mme_q[1]),
         make_pack_recipe(mmk_q[1]),
         make_pack_recipe(mma_q[1]),
-        make_swarm_pack(mme_q[1]),
-        make_swarm_pack(mmk_q[1]),
-        make_swarm_pack(mma_q[1]),
         make_swarm_pack_recipe(mme_q[1]),
         make_swarm_pack_recipe(mmk_q[1]),
         make_swarm_pack_recipe(mma_q[1])
     })
+
+    data:extend(make_swarm_pack(mme_q[1], mme_q[2]))
+    data:extend(make_swarm_pack(mmk_q[1], mmk_q[2]))
+    data:extend(make_swarm_pack(mma_q[1], mma_q[2]))
 
 
     local mmi_q = make_q_homing(mmi_i, mmi)
@@ -1288,9 +1331,10 @@ if (settings.startup["enable-q-homing"] and mods["space-age"]) then
         make_q_recipe(mmi_i),
         make_pack(mmi_q[1]),
         make_pack_recipe(mmi_q[1]),
-        make_swarm_pack(mmi_q[1]),
         make_swarm_pack_recipe(mmi_q[1])
     })
+
+    data:extend( make_swarm_pack(mmi_q[1], mmi_q[2]) )
 
 
 --technology
