@@ -39,7 +39,7 @@ local mm_i = {
                 starting_speed_deviation = 0.25,
                 direction_deviation = 0.1,
                 range_deviation = 0.1,
-                max_range = 200,
+                
                 source_effects =
                 {
                     type = "create-entity",
@@ -142,7 +142,7 @@ local mmh_i = {
                 starting_speed_deviation = 0.25,
                 direction_deviation = 0.2,
                 range_deviation = 0.2,
-                max_range = 200,
+                
                 source_effects =
                 {
                     type = "create-entity",
@@ -244,7 +244,7 @@ local mme_i = {
                 starting_speed_deviation = 0.25,
                 direction_deviation = 0.15,
                 range_deviation = 0.15,
-                max_range = 200,
+                
                 source_effects =
                 {
                     type = "create-entity",
@@ -369,7 +369,7 @@ local mmi_i = {
                 starting_speed_deviation = 0.25,
                 direction_deviation = 0.15,
                 range_deviation = 0.15,
-                max_range = 200,
+                
                 source_effects =
                 {
                     type = "create-entity",
@@ -517,7 +517,7 @@ local mmk_i = {
                 starting_speed_deviation = 0.25,
                 direction_deviation = 0.05,
                 range_deviation = 0.05,
-                max_range = 200,
+                
                 source_effects =
                 {
                     type = "create-entity",
@@ -621,7 +621,7 @@ mma_i = {
                 starting_speed_deviation = 0.25,
                 direction_deviation = 0.1,
                 range_deviation = 0.1,
-                max_range = 200,
+                
                 source_effects =
                 {
                     type = "create-entity",
