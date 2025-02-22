@@ -1293,7 +1293,7 @@ function make_q_recipe(missile)
 end
 
 --q-homing
-if (settings.startup["enable-q-homing"] and mods["space-age"]) then 
+if (settings.startup["enable-q-homing"].value and mods["space-age"]) then 
     local mme_q = make_q_homing(mme_i, mme)
     local mmk_q = make_q_homing(mmk_i, mmk)
     local mma_q = make_q_homing(mma_i, mma)

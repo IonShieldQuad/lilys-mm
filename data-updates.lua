@@ -1,5 +1,5 @@
 
-if settings.startup["cheap-mode"] then
+if settings.startup["cheap-mode"].value then
     local recipes = data.raw["recipe"]
     for name, recipe in pairs(recipes) do
         if (string.find(name, "micromissile-") and (string.find(name, "-pack") == nil)) then
