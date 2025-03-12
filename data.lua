@@ -129,7 +129,7 @@ local mmh_i = {
     ammo_type =
     {
         target_type = "entity",
-        range_modifier = 1.2,
+        range_modifier = 1.4,
         cooldown_modifier = 0.1,
         action =
         {

@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.3.5
+Date: 2025-03-12
+  Changes:
+    - Buffed the range of standard homing micromissile slightly (to make it larger then q-homing missiles)
+---------------------------------------------------------------------------------------------------
 Version: 1.3.4
 Date: 2025-02-22
   Changes:
