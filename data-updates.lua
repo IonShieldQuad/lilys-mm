@@ -1,4 +1,4 @@
-
+require("categories")
 if settings.startup["cheap-mode"].value then
     local recipes = data.raw["recipe"]
     for name, recipe in pairs(recipes) do

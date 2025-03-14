@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.3.6
+Date: 2025-03-14
+  Changes:
+    - Age of production compatiblity
+    - Q-missiles recipe also requires 10 fluoroketone now
+    - Added an alternate micromisssile recipe using LSD instead of carbon fiber. You CAN make it sustainably from asteroids, unlike the latter.
+---------------------------------------------------------------------------------------------------
 Version: 1.3.5
 Date: 2025-03-12
   Changes:

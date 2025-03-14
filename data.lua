@@ -760,7 +760,7 @@ data:extend({
     {
         type = "recipe",
         name = "micromissile",
-        category = "advanced-crafting",
+        category = (mods["Age-of-Production"] and "ammunition-or-crafting" or "advanced-crafting"),
         subgroup = "ammo",
         allow_productivity = true,
         enabled = false,
@@ -774,13 +774,34 @@ data:extend({
         results = { { type = "item", name = "micromissile", amount = 10 } }
     }
 })
+if mods["space-age"] then
+--recipe basic
+data:extend({
+    {
+        type = "recipe",
+        name = "micromissile-alt",
+        category = (mods["Age-of-Production"] and "ammunition-or-crafting" or "advanced-crafting"),
+        subgroup = "ammo",
+        allow_productivity = true,
+        enabled = false,
+        energy_required = 5,
+        ingredients =
+        {
+            { type = "item", name = "low-density-structure", amount = 2 },
+            { type = "item", name = "rocket-fuel",                                                     amount = 1 },
+            { type = "item", name = "explosives",                                                      amount = 1 }
+        },
+        results = { { type = "item", name = "micromissile", amount = 10 } }
+    }
+})
+end
 
 --recipe homing
 data:extend({
     {
         type = "recipe",
         name = "micromissile-homing",
-        category = "advanced-crafting",
+        category = (mods["Age-of-Production"] and "ammunition-or-crafting" or "advanced-crafting"),
         subgroup = "ammo",
         allow_productivity = false,
         enabled = false,
@@ -818,7 +839,7 @@ data:extend({
     {
         type = "recipe",
         name = "micromissile-incendiary",
-        category = (mods["space-age"] and "chemistry-or-cryogenics" or "chemistry"),
+        category = (mods["Age-of-Production"] and "ammunition-or-chemistry-or-cryogenics" or (mods["space-age"] and "chemistry-or-cryogenics" or "chemistry")),
         crafting_machine_tint = {
             primary = { r = 1.000, g = 0.735, b = 0.643, a = 1.000 }, -- #ffbba4ff
             secondary = { r = 0.749, g = 0.557, b = 0.490, a = 1.000 }, -- #bf8e7dff
@@ -844,7 +865,7 @@ data:extend({
     {
         type = "recipe",
         name = "micromissile-kinetic",
-        category = "advanced-crafting",
+        category = (mods["Age-of-Production"] and "ammunition-or-crafting" or "advanced-crafting"),
         subgroup = "ammo",
         allow_productivity = false,
         enabled = false,
@@ -864,7 +885,7 @@ data:extend({
     {
         type = "recipe",
         name = "micromissile-arc",
-        category = "electromagnetics",
+            category = (mods["Age-of-Production"] and "ammunition-or-electromagnetics" or "electromagnetics"),
         subgroup = "ammo",
         allow_productivity = false,
         enabled = false,
@@ -909,6 +930,10 @@ if mods["space-age"] then
                 {
                     type = "unlock-recipe",
                     recipe = "micromissile"
+                },
+                {
+                    type = "unlock-recipe",
+                    recipe = "micromissile-alt"
                 },
                 {
                     type = "unlock-recipe",
@@ -1021,6 +1046,7 @@ function make_pack_recipe(missile)
         type = "recipe",
         name = missile.name .. "-pack",
         subgroup = "ammo",
+        category = (mods["Age-of-Production"] and "ammunition-or-crafting" or "crafting"),
         allow_productivity = false,
         enabled = false,
         energy_required = 1,
@@ -1119,6 +1145,7 @@ function make_swarm_pack_recipe(missile)
     local recipe = {
         type = "recipe",
         name = missile.name .. "-swarm-pack",
+        category = (mods["Age-of-Production"] and "ammunition-or-crafting" or "crafting"),
         subgroup = "ammo",
         allow_productivity = false,
         enabled = false,
@@ -1221,6 +1248,7 @@ if mods["space-age"] then
     })
 end
 
+---@diagnostic disable-next-line: assign-type-mismatch
 data:extend({tech_2})
     
 
@@ -1285,7 +1313,8 @@ function make_q_recipe(missile)
         ingredients =
         {
             { type = "item", name = missile.name, amount = 1 },
-            { type = "item", name = "quantum-processor", amount = 1 }
+            { type = "item", name = "quantum-processor", amount = 1 },
+            { type = "fluid", name = "fluoroketone-cold", amount = 10 }
         },
         results = { { type = "item", name = missile.name .. "-q", amount = 1 } }
     }
