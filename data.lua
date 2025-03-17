@@ -820,7 +820,7 @@ data:extend({
     {
         type = "recipe",
         name = "micromissile-explosive",
-        category = "advanced-crafting",
+        category = (mods["Age-of-Production"] and "ammunition-or-crafting" or "advanced-crafting"),
         subgroup = "ammo",
         allow_productivity = false,
         enabled = false,
