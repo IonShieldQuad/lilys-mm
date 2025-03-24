@@ -999,6 +999,7 @@ local tech = data.raw["technology"]["mass-rocketry"]
 local tech_2 = table.deepcopy(data.raw["technology"]["mass-rocketry"])
 tech_2.name = "mass-rocketry-2"
 tech_2.icon = "__lilys-mm__/graphics/technology/mass-rocketry-2.png"
+tech_2.icon_size = 256
 tech_2.prerequisites = { "mass-rocketry" }
 tech_2.unit.count = 10000
 tech_2.effects = {}
