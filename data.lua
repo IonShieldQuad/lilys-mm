@@ -39,7 +39,7 @@ local mm_i = {
                 starting_speed_deviation = 0.25,
                 direction_deviation = 0.1,
                 range_deviation = 0.1,
-                
+
                 source_effects =
                 {
                     type = "create-entity",
@@ -57,7 +57,7 @@ local mm_i = {
     weight = 5 * kg
 }
 
-data:extend({mm_i})
+data:extend({ mm_i })
 
 --basic projectile
 local mm = {
@@ -102,7 +102,7 @@ local mm = {
                     include_decals = false,
                     invoke_decorative_trigger = true,
                     decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
-                    radius = 0.5               -- large radius for demostrative purposes
+                    radius = 0.5                           -- large radius for demostrative purposes
                 }
             }
         }
@@ -116,7 +116,7 @@ local mm = {
 
 mm.animation = minituarize(mm.animation)
 mm.shadow = minituarize(mm.shadow)
-data:extend({mm})
+data:extend({ mm })
 
 
 
@@ -142,7 +142,7 @@ local mmh_i = {
                 starting_speed_deviation = 0.25,
                 direction_deviation = 0.2,
                 range_deviation = 0.2,
-                
+
                 source_effects =
                 {
                     type = "create-entity",
@@ -244,7 +244,7 @@ local mme_i = {
                 starting_speed_deviation = 0.25,
                 direction_deviation = 0.15,
                 range_deviation = 0.15,
-                
+
                 source_effects =
                 {
                     type = "create-entity",
@@ -276,64 +276,64 @@ local mme = {
     --turning_speed_increases_exponentially_with_projectile_speed = true,
     collision_box = { { -0.5, -0.3 }, { 0.5, 0.3 } },
     action = {
-      type = "direct",
-      action_delivery =
-      {
-        type = "instant",
-        target_effects =
+        type = "direct",
+        action_delivery =
         {
-          {
-            type = "create-entity",
-            entity_name = "explosion"
-          },
-          {
-            type = "damage",
-            damage = {amount = 20, type = "explosion"}
-          },
-          {
-            type = "create-entity",
-            entity_name = "medium-scorchmark-tintable",
-            check_buildability = true
-          },
-          {
-            type = "invoke-tile-trigger",
-            repeat_count = 1
-          },
-          {
-            type = "destroy-decoratives",
-            from_render_layer = "decorative",
-            to_render_layer = "object",
-            include_soft_decoratives = true, -- soft decoratives are decoratives with grows_through_rail_path = true
-            include_decals = false,
-            invoke_decorative_trigger = true,
-            decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
-            radius = 2.5 -- large radius for demostrative purposes
-          },
-          {
-            type = "nested-result",
-            action =
+            type = "instant",
+            target_effects =
             {
-              type = "area",
-              radius = 3.5,
-              action_delivery =
-              {
-                type = "instant",
-                target_effects =
                 {
-                  {
-                    type = "damage",
-                    damage = {amount = 35, type = "explosion"}
-                  },
-                  {
                     type = "create-entity",
                     entity_name = "explosion"
-                  }
+                },
+                {
+                    type = "damage",
+                    damage = { amount = 20, type = "explosion" }
+                },
+                {
+                    type = "create-entity",
+                    entity_name = "medium-scorchmark-tintable",
+                    check_buildability = true
+                },
+                {
+                    type = "invoke-tile-trigger",
+                    repeat_count = 1
+                },
+                {
+                    type = "destroy-decoratives",
+                    from_render_layer = "decorative",
+                    to_render_layer = "object",
+                    include_soft_decoratives = true, -- soft decoratives are decoratives with grows_through_rail_path = true
+                    include_decals = false,
+                    invoke_decorative_trigger = true,
+                    decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
+                    radius = 2.5                           -- large radius for demostrative purposes
+                },
+                {
+                    type = "nested-result",
+                    action =
+                    {
+                        type = "area",
+                        radius = 3.5,
+                        action_delivery =
+                        {
+                            type = "instant",
+                            target_effects =
+                            {
+                                {
+                                    type = "damage",
+                                    damage = { amount = 35, type = "explosion" }
+                                },
+                                {
+                                    type = "create-entity",
+                                    entity_name = "explosion"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
         }
-      }
     },
     --light = {intensity = 0.5, size = 4},
     animation = require("__base__.prototypes.entity.rocket-projectile-pictures").animation({ 1, 0.2, 0.2 }),
@@ -369,7 +369,7 @@ local mmi_i = {
                 starting_speed_deviation = 0.25,
                 direction_deviation = 0.15,
                 range_deviation = 0.15,
-                
+
                 source_effects =
                 {
                     type = "create-entity",
@@ -416,10 +416,10 @@ local mmi = {
                 {
                     type = "damage",
                     damage = { amount = 10, type = "explosion" }
-                }, 
+                },
                 {
-                type = "damage",
-                damage = { amount = 20, type = "fire" }
+                    type = "damage",
+                    damage = { amount = 20, type = "fire" }
                 },
                 {
                     type = "create-entity",
@@ -449,7 +449,7 @@ local mmi = {
                     include_decals = false,
                     invoke_decorative_trigger = true,
                     decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
-                    radius = 2.5                   -- large radius for demostrative purposes
+                    radius = 2.5                           -- large radius for demostrative purposes
                 },
                 {
                     type = "nested-result",
@@ -517,7 +517,7 @@ local mmk_i = {
                 starting_speed_deviation = 0.25,
                 direction_deviation = 0.05,
                 range_deviation = 0.05,
-                
+
                 source_effects =
                 {
                     type = "create-entity",
@@ -585,7 +585,7 @@ local mmk = {
         }
     },
     --light = {intensity = 0.5, size = 4},
-    animation = require("__base__.prototypes.entity.rocket-projectile-pictures").animation({ 0.4, 0.0, 0.5 }), 
+    animation = require("__base__.prototypes.entity.rocket-projectile-pictures").animation({ 0.4, 0.0, 0.5 }),
     shadow = require("__base__.prototypes.entity.rocket-projectile-pictures").shadow,
     smoke = require("__base__.prototypes.entity.rocket-projectile-pictures").smoke,
 }
@@ -598,161 +598,160 @@ data:extend({ mmk })
 local mma_i = {}
 local mma = {}
 if mods["space-age"] then
--- arc
-mma_i = {
-    type = "ammo",
-    name = "micromissile-arc",
-    icon = "__lilys-mm__/graphics/icons/micromissile-arc.png",
-    ammo_category = "rocket",
-    ammo_type =
-    {
-        target_type = "position",
-        range_modifier = 1.2,
-
-        cooldown_modifier = 0.1,
-        action =
+    -- arc
+    mma_i = {
+        type = "ammo",
+        name = "micromissile-arc",
+        icon = "__lilys-mm__/graphics/icons/micromissile-arc.png",
+        ammo_category = "rocket",
+        ammo_type =
         {
+            target_type = "position",
+            range_modifier = 1.2,
+
+            cooldown_modifier = 0.1,
+            action =
+            {
+                type = "direct",
+                action_delivery =
+                {
+                    type = "projectile",
+                    projectile = "micromissile-arc",
+                    starting_speed = 0.4,
+                    starting_speed_deviation = 0.25,
+                    direction_deviation = 0.1,
+                    range_deviation = 0.1,
+
+                    source_effects =
+                    {
+                        type = "create-entity",
+                        entity_name = "explosion-hit"
+                    }
+                }
+            }
+        },
+        subgroup = "ammo",
+        order = "d[rocket-launcher]-f[micromissile-arc]",
+        inventory_move_sound = item_sounds.ammo_small_inventory_move,
+        pick_sound = item_sounds.ammo_small_inventory_move,
+        drop_sound = item_sounds.ammo_small_inventory_move,
+        stack_size = 1000,
+        weight = 10 * kg
+    }
+
+    data:extend({ mma_i })
+
+    local beam = table.deepcopy(data.raw["beam"]["chain-tesla-gun-beam-bounce"])
+    beam.name = "micromissile-arc-chain-beam-bounce"
+    for _, effect in ipairs(beam.action.action_delivery.target_effects) do
+        if effect.type == "damage" then
+            effect.damage = { amount = 3, type = "electric" }
+        end
+    end
+    local arc = table.deepcopy(data.raw["chain-active-trigger"]["chain-tesla-gun-chain"])
+    arc.name = "chain-micromissile-arc"
+    arc.max_jumps = 2
+    arc.max_range_per_jump = 8
+    arc.fork_chance = 0.2
+    arc.jump_delay_ticks = 0
+    local arcdel = arc.action.action_delivery
+    arcdel.beam = "micromissile-arc-chain-beam-bounce"
+    arcdel.max_range = 8.5
+    arcdel.duration = 20
+    data:extend({ beam, arc })
+
+
+    --arc projectile
+    mma = {
+        type = "projectile",
+        name = "micromissile-arc",
+        flags = { "not-on-map" },
+        hidden = true,
+        acceleration = 0.1,
+        turn_speed = 0.1,
+        force_condition = "not-same",
+        --turning_speed_increases_exponentially_with_projectile_speed = true,
+        collision_box = { { -0.5, -0.3 }, { 0.5, 0.3 } },
+        action = {
             type = "direct",
             action_delivery =
             {
-                type = "projectile",
-                projectile = "micromissile-arc",
-                starting_speed = 0.4,
-                starting_speed_deviation = 0.25,
-                direction_deviation = 0.1,
-                range_deviation = 0.1,
-                
-                source_effects =
+                type = "instant",
+                target_effects =
                 {
-                    type = "create-entity",
-                    entity_name = "explosion-hit"
-                }
-            }
-        }
-    },
-    subgroup = "ammo",
-    order = "d[rocket-launcher]-f[micromissile-arc]",
-    inventory_move_sound = item_sounds.ammo_small_inventory_move,
-    pick_sound = item_sounds.ammo_small_inventory_move,
-    drop_sound = item_sounds.ammo_small_inventory_move,
-    stack_size = 1000,
-    weight = 10 * kg
-}
-
-data:extend({ mma_i })
-
-local beam = table.deepcopy(data.raw["beam"]["chain-tesla-gun-beam-bounce"])
-beam.name = "micromissile-arc-chain-beam-bounce"
-for _, effect in ipairs(beam.action.action_delivery.target_effects) do
-    if effect.type == "damage" then
-            effect.damage = { amount = 3, type = "electric" }
-    end
-end
-local arc = table.deepcopy(data.raw["chain-active-trigger"]["chain-tesla-gun-chain"])
-arc.name = "chain-micromissile-arc"
-arc.max_jumps = 2
-arc.max_range_per_jump = 8
-arc.fork_chance = 0.2
-arc.jump_delay_ticks = 0
-local arcdel = arc.action.action_delivery
-arcdel.beam = "micromissile-arc-chain-beam-bounce"
-arcdel.max_range = 8.5
-arcdel.duration = 20
-data:extend({beam, arc})
-
-
---arc projectile
-mma = {
-    type = "projectile",
-    name = "micromissile-arc",
-    flags = { "not-on-map" },
-    hidden = true,
-    acceleration = 0.1,
-    turn_speed = 0.1,
-    force_condition = "not-same",
-    --turning_speed_increases_exponentially_with_projectile_speed = true,
-    collision_box = { { -0.5, -0.3 }, { 0.5, 0.3 } },
-    action = {
-        type = "direct",
-        action_delivery =
-        {
-            type = "instant",
-            target_effects =
-            {
-                {
-                    type = "nested-result",
-                    action = {
-                        type = "area",
-                        radius = 2.5,
-                        trigger_from_target = true,
-                        action_delivery = {
-                            {
-                                type = "chain",
-                                chain = "chain-micromissile-arc"
-                            },
-                            {
-                                type = "beam",
-                                add_to_shooter = false,
-                                beam = "micromissile-arc-chain-beam-bounce",
-                                duration = 20,
-                                max_length = 8
+                    {
+                        type = "nested-result",
+                        action = {
+                            type = "area",
+                            radius = 2.5,
+                            trigger_from_target = true,
+                            action_delivery = {
+                                {
+                                    type = "chain",
+                                    chain = "chain-micromissile-arc"
+                                },
+                                {
+                                    type = "beam",
+                                    add_to_shooter = false,
+                                    beam = "micromissile-arc-chain-beam-bounce",
+                                    duration = 20,
+                                    max_length = 8
+                                }
                             }
                         }
-                    }
-                },
-                {
-                    type = "damage",
-                    damage = { amount = 5, type = "physical" }
-                },
-                {
-                    type = "damage",
-                    damage = { amount = 20, type = "electric" }
-                },
-                {
-                    type = "push-back",
-                    distance = 0.5
-                },
-                {
-                    type = "create-sticker",
-                    sticker = "tesla-turret-stun"
-                },
-                {
-                    type = "create-sticker",
-                    sticker = "tesla-turret-slow"
-                },
-                {
-                    type = "create-entity",
-                    entity_name = "small-scorchmark-tintable",
-                    check_buildability = true
-                },
-                {
-                    type = "invoke-tile-trigger",
-                    repeat_count = 1
-                },
-                {
-                    type = "destroy-decoratives",
-                    from_render_layer = "decorative",
-                    to_render_layer = "object",
-                    include_soft_decoratives = true, -- soft decoratives are decoratives with grows_through_rail_path = true
-                    include_decals = false,
-                    invoke_decorative_trigger = true,
-                    decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
-                    radius = 0.5                           -- large radius for demostrative purposes
-                },
+                    },
+                    {
+                        type = "damage",
+                        damage = { amount = 5, type = "physical" }
+                    },
+                    {
+                        type = "damage",
+                        damage = { amount = 20, type = "electric" }
+                    },
+                    {
+                        type = "push-back",
+                        distance = 0.5
+                    },
+                    {
+                        type = "create-sticker",
+                        sticker = "tesla-turret-stun"
+                    },
+                    {
+                        type = "create-sticker",
+                        sticker = "tesla-turret-slow"
+                    },
+                    {
+                        type = "create-entity",
+                        entity_name = "small-scorchmark-tintable",
+                        check_buildability = true
+                    },
+                    {
+                        type = "invoke-tile-trigger",
+                        repeat_count = 1
+                    },
+                    {
+                        type = "destroy-decoratives",
+                        from_render_layer = "decorative",
+                        to_render_layer = "object",
+                        include_soft_decoratives = true, -- soft decoratives are decoratives with grows_through_rail_path = true
+                        include_decals = false,
+                        invoke_decorative_trigger = true,
+                        decoratives_with_trigger_only = false, -- if true, destroys only decoratives that have trigger_effect set
+                        radius = 0.5                           -- large radius for demostrative purposes
+                    },
+                }
             }
-        }
-    },
-    --light = {intensity = 0.5, size = 4},
-    animation = require("__base__.prototypes.entity.rocket-projectile-pictures").animation({ 0.0, 0.5, 1.0 }),
-    shadow = require("__base__.prototypes.entity.rocket-projectile-pictures").shadow,
-    smoke = require("__base__.prototypes.entity.rocket-projectile-pictures").smoke,
-}
+        },
+        --light = {intensity = 0.5, size = 4},
+        animation = require("__base__.prototypes.entity.rocket-projectile-pictures").animation({ 0.0, 0.5, 1.0 }),
+        shadow = require("__base__.prototypes.entity.rocket-projectile-pictures").shadow,
+        smoke = require("__base__.prototypes.entity.rocket-projectile-pictures").smoke,
+    }
 
 
-mma.animation = minituarize(mma.animation)
-mma.shadow = minituarize(mma.shadow)
-data:extend({ mma })
-
+    mma.animation = minituarize(mma.animation)
+    mma.shadow = minituarize(mma.shadow)
+    data:extend({ mma })
 end
 
 --recipe basic
@@ -767,33 +766,33 @@ data:extend({
         energy_required = 5,
         ingredients =
         {
-            { type = "item",  name = (mods["space-age"] and "carbon-fiber" or "low-density-structure"), amount = 2 },
-            { type = "item", name = "rocket-fuel",   amount = 1 },
-            { type = "item",  name = "explosives",   amount = 1 }
-        },
-        results = { { type = "item", name = "micromissile", amount = 10 } }
-    }
-})
-if mods["space-age"] then
---recipe basic
-data:extend({
-    {
-        type = "recipe",
-        name = "micromissile-alt",
-        category = (mods["Age-of-Production"] and "ammunition-or-crafting" or "advanced-crafting"),
-        subgroup = "ammo",
-        allow_productivity = true,
-        enabled = false,
-        energy_required = 5,
-        ingredients =
-        {
-            { type = "item", name = "low-density-structure", amount = 2 },
+            { type = "item", name = (mods["space-age"] and "carbon-fiber" or "low-density-structure"), amount = 2 },
             { type = "item", name = "rocket-fuel",                                                     amount = 1 },
             { type = "item", name = "explosives",                                                      amount = 1 }
         },
         results = { { type = "item", name = "micromissile", amount = 10 } }
     }
 })
+if mods["space-age"] then
+    --recipe basic
+    data:extend({
+        {
+            type = "recipe",
+            name = "micromissile-alt",
+            category = (mods["Age-of-Production"] and "ammunition-or-crafting" or "advanced-crafting"),
+            subgroup = "ammo",
+            allow_productivity = true,
+            enabled = false,
+            energy_required = 5,
+            ingredients =
+            {
+                { type = "item", name = "low-density-structure", amount = 2 },
+                { type = "item", name = "rocket-fuel",           amount = 1 },
+                { type = "item", name = "explosives",            amount = 1 }
+            },
+            results = { { type = "item", name = "micromissile", amount = 10 } }
+        }
+    })
 end
 
 --recipe homing
@@ -827,8 +826,8 @@ data:extend({
         energy_required = 1,
         ingredients =
         {
-            { type = "item", name = "micromissile",    amount = 1 },
-            { type = "item", name = "explosives", amount = 1 }
+            { type = "item", name = "micromissile", amount = 1 },
+            { type = "item", name = "explosives",   amount = 1 }
         },
         results = { { type = "item", name = "micromissile-explosive", amount = 1 } }
     }
@@ -841,19 +840,19 @@ data:extend({
         name = "micromissile-incendiary",
         category = (mods["Age-of-Production"] and "ammunition-or-chemistry-or-cryogenics" or (mods["space-age"] and "chemistry-or-cryogenics" or "chemistry")),
         crafting_machine_tint = {
-            primary = { r = 1.000, g = 0.735, b = 0.643, a = 1.000 }, -- #ffbba4ff
-            secondary = { r = 0.749, g = 0.557, b = 0.490, a = 1.000 }, -- #bf8e7dff
-            tertiary = { r = 0.837, g = 0.637, b = 0.637, a = 1.000 }, -- #c2a2a2ff
+            primary = { r = 1.000, g = 0.735, b = 0.643, a = 1.000 },    -- #ffbba4ff
+            secondary = { r = 0.749, g = 0.557, b = 0.490, a = 1.000 },  -- #bf8e7dff
+            tertiary = { r = 0.837, g = 0.637, b = 0.637, a = 1.000 },   -- #c2a2a2ff
             quaternary = { r = 0.883, g = 0.283, b = 0.283, a = 1.000 }, -- #c84848ff
-            },
+        },
         subgroup = "ammo",
         allow_productivity = false,
         enabled = false,
         energy_required = 1,
         ingredients =
         {
-            { type = "item", name = "micromissile",    amount = 1 },
-            { type = "fluid", name = "light-oil", amount = 50 }
+            { type = "item",  name = "micromissile", amount = 1 },
+            { type = "fluid", name = "light-oil",    amount = 50 }
         },
         results = { { type = "item", name = "micromissile-incendiary", amount = 1 } }
     }
@@ -872,7 +871,7 @@ data:extend({
         energy_required = 1,
         ingredients =
         {
-            { type = "item", name = "micromissile", amount = 1 },
+            { type = "item", name = "micromissile",                                            amount = 1 },
             { type = "item", name = (mods["space-age"] and "tungsten-plate" or "steel-plate"), amount = (mods["space-age"] and 1 or 2) }
         },
         results = { { type = "item", name = "micromissile-kinetic", amount = 1 } }
@@ -880,24 +879,24 @@ data:extend({
 })
 
 if mods["space-age"] then
---recipe arc
-data:extend({
-    {
-        type = "recipe",
-        name = "micromissile-arc",
-            category = (mods["Age-of-Production"] and "ammunition-or-electromagnetics" or "electromagnetics"),
-        subgroup = "ammo",
-        allow_productivity = false,
-        enabled = false,
-        energy_required = 1,
-        ingredients =
+    --recipe arc
+    data:extend({
         {
-            { type = "item", name = "micromissile",    amount = 3 },
-            { type = "item", name = "supercapacitor", amount = 3 }
-        },
-        results = { { type = "item", name = "micromissile-arc", amount = 2 } }
-    }
-})
+            type = "recipe",
+            name = "micromissile-arc",
+            category = (mods["Age-of-Production"] and "ammunition-or-electromagnetics" or "electromagnetics"),
+            subgroup = "ammo",
+            allow_productivity = false,
+            enabled = false,
+            energy_required = 1,
+            ingredients =
+            {
+                { type = "item", name = "micromissile",   amount = 3 },
+                { type = "item", name = "supercapacitor", amount = 3 }
+            },
+            results = { { type = "item", name = "micromissile-arc", amount = 2 } }
+        }
+    })
 end
 
 --technology
@@ -909,7 +908,7 @@ if mods["space-age"] then
             name = "mass-rocketry",
             icon_size = 256,
             icon = "__lilys-mm__/graphics/technology/mass-rocketry.png",
-            prerequisites = {"rocket-turret", "utility-science-pack",},
+            prerequisites = { "rocket-turret", "utility-science-pack", },
             unit =
             {
                 ingredients =
@@ -919,7 +918,7 @@ if mods["space-age"] then
                     { "military-science-pack",     1 },
                     { "chemical-science-pack",     1 },
                     { "space-science-pack",        1 },
-                    { "utility-science-pack",        1 },
+                    { "utility-science-pack",      1 },
                     { "agricultural-science-pack", 1 }
                 },
                 time = 30,
@@ -963,11 +962,11 @@ else
             {
                 ingredients =
                 {
-                    { "automation-science-pack",   1 },
-                    { "logistic-science-pack",     1 },
-                    { "military-science-pack",     1 },
-                    { "chemical-science-pack",     1 },
-                    { "utility-science-pack",      1 }
+                    { "automation-science-pack", 1 },
+                    { "logistic-science-pack",   1 },
+                    { "military-science-pack",   1 },
+                    { "chemical-science-pack",   1 },
+                    { "utility-science-pack",    1 }
                 },
                 time = 30,
                 count = 1000
@@ -1007,8 +1006,8 @@ tech_2.effects = {}
 if mods["space-age"] then
     table.insert(tech_2.prerequisites, "metallurgic-science-pack")
     table.insert(tech_2.prerequisites, "electromagnetic-science-pack")
-    table.insert(tech_2.unit.ingredients, {"metallurgic-science-pack", 1})
-    table.insert(tech_2.unit.ingredients, {"electromagnetic-science-pack", 1})
+    table.insert(tech_2.unit.ingredients, { "metallurgic-science-pack", 1 })
+    table.insert(tech_2.unit.ingredients, { "electromagnetic-science-pack", 1 })
 end
 
 table.insert(tech.effects, {
@@ -1032,7 +1031,7 @@ function make_pack(missile)
     pack.icon = string.gsub(missile.icon, ".png", "-pack.png")
     pack.magazine_size = 20
     pack.order = missile.order .. "-pack"
-    
+
     pack.inventory_move_sound = item_sounds.ammo_large_inventory_move
     pack.pick_sound = item_sounds.ammo_large_inventory_move
     pack.drop_sound = item_sounds.ammo_large_inventory_move
@@ -1040,7 +1039,6 @@ function make_pack(missile)
     pack.weight = missile.weight * 20
     return pack
 end
-    
 
 function make_pack_recipe(missile)
     local recipe = {
@@ -1074,7 +1072,7 @@ function make_swarm_pack(missile, projectile, no_scatter)
         },
         {
             icon = "__base__/graphics/icons/signal/signal-stack-size.png",
-            tint = {0.70, 0.70, 0.70, 0.70},
+            tint = { 0.70, 0.70, 0.70, 0.70 },
             scale = 0.4
         },
     }
@@ -1083,22 +1081,23 @@ function make_swarm_pack(missile, projectile, no_scatter)
     pack.ammo_type.action.repeat_count = 4
 
     if not no_scatter then
-
         if missile.ammo_type.target_type == "entity" then
             proj.turn_speed = 0.001
             proj.turning_speed_increases_exponentially_with_projectile_speed = true
             pack.ammo_type.action.action_delivery.direction_deviation = 4
-            pack.ammo_type.action.action_delivery.range_deviation = pack.ammo_type.action.action_delivery.range_deviation *
-            1.5
+            pack.ammo_type.action.action_delivery.range_deviation = pack.ammo_type.action.action_delivery
+                .range_deviation *
+                1.5
         else
             proj.turn_speed = 0.002
             proj.turning_speed_increases_exponentially_with_projectile_speed = true
             pack.ammo_type.action.action_delivery.direction_deviation = pack.ammo_type.action.action_delivery
-            .direction_deviation * 2
-            pack.ammo_type.action.action_delivery.range_deviation = pack.ammo_type.action.action_delivery.range_deviation *
-            1.5
+                .direction_deviation * 2
+            pack.ammo_type.action.action_delivery.range_deviation = pack.ammo_type.action.action_delivery
+                .range_deviation *
+                1.5
         end
-        
+
         pack.ammo_type.action.action_delivery.projectile = pack.ammo_type.action.action_delivery.projectile .. "-swarm"
 
         local act = pack.ammo_type.action
@@ -1126,12 +1125,10 @@ function make_swarm_pack(missile, projectile, no_scatter)
             }
         }
     else
-
         pack.ammo_type.action.action_delivery.direction_deviation = pack.ammo_type.action.action_delivery
             .direction_deviation * 3
         pack.ammo_type.action.action_delivery.range_deviation = pack.ammo_type.action.action_delivery.range_deviation *
             2
-
     end
 
     pack.inventory_move_sound = item_sounds.ammo_large_inventory_move
@@ -1139,7 +1136,7 @@ function make_swarm_pack(missile, projectile, no_scatter)
     pack.drop_sound = item_sounds.ammo_large_inventory_move
     pack.stack_size = missile.stack_size / 10
     pack.weight = missile.weight * 20
-    return {pack, proj}
+    return { pack, proj }
 end
 
 function make_swarm_pack_recipe(missile)
@@ -1173,12 +1170,12 @@ data.extend({
     make_pack_recipe(mmk_i),
     make_pack_recipe(mmi_i)
 })
-    data:extend(make_swarm_pack(mm_i, mm))
-    data:extend(make_swarm_pack(mmh_i, mmh))
-    data:extend(make_swarm_pack(mme_i, mme))
-    data:extend(make_swarm_pack(mmk_i, mmk, true))
-    data:extend(make_swarm_pack(mmi_i, mmi))
-    data:extend({
+data:extend(make_swarm_pack(mm_i, mm))
+data:extend(make_swarm_pack(mmh_i, mmh))
+data:extend(make_swarm_pack(mme_i, mme))
+data:extend(make_swarm_pack(mmk_i, mmk, true))
+data:extend(make_swarm_pack(mmi_i, mmi))
+data:extend({
     make_swarm_pack_recipe(mm_i),
     make_swarm_pack_recipe(mmh_i),
     make_swarm_pack_recipe(mme_i),
@@ -1187,11 +1184,11 @@ data.extend({
 })
 if mods["space-age"] then
     data.extend({
-    make_pack(mma_i),
-    make_pack_recipe(mma_i),
-    make_swarm_pack_recipe(mma_i)
-})
-data.extend(make_swarm_pack(mma_i, mma))
+        make_pack(mma_i),
+        make_pack_recipe(mma_i),
+        make_swarm_pack_recipe(mma_i)
+    })
+    data.extend(make_swarm_pack(mma_i, mma))
 end
 
 
@@ -1211,10 +1208,10 @@ table.insert(tech.effects, {
     type = "unlock-recipe",
     recipe = "micromissile-kinetic-pack"
 })
-    table.insert(tech.effects, {
-        type = "unlock-recipe",
-        recipe = "micromissile-incendiary-pack"
-    })
+table.insert(tech.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-incendiary-pack"
+})
 if mods["space-age"] then
     table.insert(tech.effects, {
         type = "unlock-recipe",
@@ -1250,8 +1247,8 @@ if mods["space-age"] then
 end
 
 ---@diagnostic disable-next-line: assign-type-mismatch
-data:extend({tech_2})
-    
+data:extend({ tech_2 })
+
 
 
 
@@ -1280,7 +1277,7 @@ function make_q_homing(item, projectile, special)
     local p = table.deepcopy(projectile)
     p.name = projectile.name .. "-q"
     p.direction_only = false
-    p.collision_box = {{0, 0}, {0, 0} }
+    p.collision_box = { { 0, 0 }, { 0, 0 } }
     if special then
         p.action = {
             type = "area",
@@ -1297,9 +1294,9 @@ function make_q_homing(item, projectile, special)
                 range_deviation = projectile.range_deviation,
                 max_range = projectile.max_range,
             }--]]
-    }
+        }
     end
-    return {q, p}
+    return { q, p }
 end
 
 function make_q_recipe(missile)
@@ -1313,8 +1310,8 @@ function make_q_recipe(missile)
         energy_required = 1,
         ingredients =
         {
-            { type = "item", name = missile.name, amount = 1 },
-            { type = "item", name = "quantum-processor", amount = 1 },
+            { type = "item",  name = missile.name,        amount = 1 },
+            { type = "item",  name = "quantum-processor", amount = 1 },
             { type = "fluid", name = "fluoroketone-cold", amount = 10 }
         },
         results = { { type = "item", name = missile.name .. "-q", amount = 1 } }
@@ -1322,8 +1319,229 @@ function make_q_recipe(missile)
     return recipe
 end
 
+--artillery
+local function make_artillery_projectile(projectile)
+    local map_color = projectile.animation.layers[2].tint
+    local missile = table.deepcopy(projectile)
+    missile.type = "artillery-projectile"
+    missile.name = projectile.name .. "-artillery"
+    missile.hidden = true
+    missile.reveal_map = true
+    missile.map_color = map_color
+    missile.picture = { layers = missile.animation.layers }
+    missile.shadow.tint = { 0, 0, 0, 1 }
+
+    missile.chart_picture =
+    {
+        filename = "__lilys-mm__/graphics/artillery-shoot-map-visualization.png",
+        flags = { "icon" },
+        width = 64,
+        height = 64,
+        priority = "high",
+        scale = 0.25,
+        tint = {map_color[1], map_color[2], map_color[3], 0.7}
+    }
+    missile.height_from_ground = 10
+
+    missile.collision_box = { { 0, 0 }, { 0, 0 } }
+
+    if missile.action.type == "direct" then
+        local damage = {}
+        for _, value in ipairs(missile.action.action_delivery.target_effects) do
+            if value.type == "damage" then
+                table.insert(damage, value)
+            end
+        end
+
+        if #damage > 0 then
+            local nested = {
+                type = "nested-result",
+                action =
+                {
+                    type = "area",
+                    radius = 2,
+                    action_delivery =
+                    {
+                        type = "instant",
+                        target_effects = {}
+                    }
+                }
+            }
+
+
+            for _, value in ipairs(damage) do
+                table.insert(nested.action.action_delivery.target_effects, value)
+            end
+
+
+            table.insert(missile.action.action_delivery.target_effects, nested)
+        end
+    end
+    return missile
+end
+
+local function make_artillery_pack(item, projectile)
+    local pack = table.deepcopy(item)
+    pack.icons = {
+        {
+            icon = string.gsub(item.icon, ".png", "-pack.png"),
+            --scale = 1
+        },
+        {
+            icon = "__base__/graphics/icons/ammo-category/artillery-shell.png",
+            tint = { 0.70, 0.70, 0.70, 0.70 },
+            scale = 0.4
+        },
+    }
+    pack.name = item.name .. "-artillery-pack"
+    pack.ammo_category = "artillery-shell"
+    local inaccuracy = item.ammo_type.action.action_delivery.direction_deviation
+    if item.ammo_type.target_type == "entity" then
+        inaccuracy = inaccuracy / 20
+    else
+        inaccuracy = inaccuracy / 3
+    end
+
+    pack.ammo_type =
+    {
+        target_type = "position",
+        action =
+        {
+            {
+                type = "direct",
+                repeat_count = 40,
+                action_delivery =
+                {
+                    type = "artillery",
+                    projectile = projectile.name,
+                    starting_speed = math.max(1.5, item.ammo_type.action.action_delivery.starting_speed),
+                    starting_speed_deviation = item.ammo_type.action.action_delivery.starting_speed_deviation / 2.0,
+                    direction_deviation = inaccuracy,
+                    range_deviation = inaccuracy,
+                    source_effects = item.ammo_type.action.action_delivery.source_effects
+                }
+            },
+            {
+                type = "direct",
+                action_delivery =
+                {
+                    type = "instant",
+                    source_effects =
+                    {
+                        {
+                            type = "create-explosion",
+                            entity_name = "artillery-cannon-muzzle-flash"
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+    pack.order = item.order .. "-artillery-pack"
+    --pack.ammo_type.action.repeat_count = 40
+
+    pack.inventory_move_sound = item_sounds.ammo_large_inventory_move
+    pack.pick_sound = item_sounds.ammo_large_inventory_move
+    pack.drop_sound = item_sounds.ammo_large_inventory_move
+    pack.stack_size = item.stack_size / 20
+    pack.weight = item.weight * 40
+
+    return pack
+end
+
+function make_artillery_pack_recipe(missile)
+    local recipe = {
+        type = "recipe",
+        name = missile.name .. "-artillery-pack",
+        category = (mods["Age-of-Production"] and "ammunition-or-crafting" or "crafting"),
+        subgroup = "ammo",
+        allow_productivity = false,
+        enabled = false,
+        energy_required = 2,
+        ingredients =
+        {
+            { type = "item", name = missile.name, amount = 40 },
+            { type = "item", name = "barrel",     amount = 1 }
+        },
+        results = { { type = "item", name = missile.name .. "-artillery-pack", amount = 1 } }
+    }
+    return recipe
+end
+
+local mm_a = make_artillery_projectile(mm)
+local mmh_a = make_artillery_projectile(mmh)
+local mme_a = make_artillery_projectile(mme)
+local mmi_a = make_artillery_projectile(mmi)
+local mmk_a = make_artillery_projectile(mmk)
+data:extend({ mm_a, mmh_a, mme_a, mmi_a, mmk_a })
+
+local mm_a_pack = make_artillery_pack(mm_i, mm_a)
+local mmh_a_pack = make_artillery_pack(mmh_i, mmh_a)
+local mme_a_pack = make_artillery_pack(mme_i, mme_a)
+local mmi_a_pack = make_artillery_pack(mmi_i, mmi_a)
+local mmk_a_pack = make_artillery_pack(mmk_i, mmk_a)
+data:extend({ mm_a_pack, mmh_a_pack, mme_a_pack, mmi_a_pack, mmk_a_pack })
+
+data:extend({ make_artillery_pack_recipe(mm_i) })
+data:extend({ make_artillery_pack_recipe(mmh_i) })
+data:extend({ make_artillery_pack_recipe(mme_i) })
+data:extend({ make_artillery_pack_recipe(mmi_i) })
+data:extend({ make_artillery_pack_recipe(mmk_i) })
+
+if mods["space-age"] then
+    local mma_a = make_artillery_projectile(mma)
+    data:extend({ mma_a })
+    local mma_a_pack = make_artillery_pack(mma_i, mma_a)
+    data:extend({ mma_a_pack })
+    data:extend({ make_artillery_pack_recipe(mma_i) })
+end
+
+
+
+
+local tech_3 = table.deepcopy(data.raw["technology"]["mass-rocketry-2"])
+tech_3.name = "mass-artillery-rocketry"
+tech_3.icon = "__lilys-mm__/graphics/technology/mass-rocketry-2.png"
+tech_3.icon_size = 256
+tech_3.prerequisites = { "mass-rocketry-2", "artillery" }
+tech_3.unit.count = 10000
+tech_3.effects = {}
+
+table.insert(tech_3.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-artillery-pack"
+})
+table.insert(tech_3.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-homing-artillery-pack"
+})
+table.insert(tech_3.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-explosive-artillery-pack"
+})
+table.insert(tech_3.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-kinetic-artillery-pack"
+})
+table.insert(tech_3.effects, {
+    type = "unlock-recipe",
+    recipe = "micromissile-incendiary-artillery-pack"
+})
+if mods["space-age"] then
+    table.insert(tech_3.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-arc-artillery-pack"
+    })
+end
+
+---@diagnostic disable-next-line: assign-type-mismatch
+data:extend({ tech_3 })
+
+
+
 --q-homing
-if (settings.startup["enable-q-homing"].value and mods["space-age"]) then 
+if (settings.startup["enable-q-homing"].value and mods["space-age"]) then
     local mme_q = make_q_homing(mme_i, mme)
     local mmk_q = make_q_homing(mmk_i, mmk)
     local mma_q = make_q_homing(mma_i, mma)
@@ -1364,17 +1582,35 @@ if (settings.startup["enable-q-homing"].value and mods["space-age"]) then
         make_swarm_pack_recipe(mmi_q[1])
     })
 
-    data:extend( make_swarm_pack(mmi_q[1], mmi_q[2]) )
+    data:extend(make_swarm_pack(mmi_q[1], mmi_q[2]))
 
 
---technology
-    local q_rocketry = 
+
+    local mme_qa = make_artillery_projectile(mme_q[2])
+    local mmi_qa = make_artillery_projectile(mmi_q[2])
+    local mmk_qa = make_artillery_projectile(mmk_q[2])
+    local mma_qa = make_artillery_projectile(mma_q[2])
+    data:extend({ mme_qa, mmi_qa, mmk_qa, mma_qa })
+
+    local mme_qa_pack = make_artillery_pack(mme_q[1], mme_qa)
+    local mmi_qa_pack = make_artillery_pack(mmi_q[1], mmi_qa)
+    local mmk_qa_pack = make_artillery_pack(mmk_q[1], mmk_qa)
+    local mma_qa_pack = make_artillery_pack(mma_q[1], mma_qa)
+    data:extend({ mme_qa_pack, mmi_qa_pack, mmk_qa_pack, mma_qa_pack })
+
+    data:extend({ make_artillery_pack_recipe(mme_q[1]) })
+    data:extend({ make_artillery_pack_recipe(mmi_q[1]) })
+    data:extend({ make_artillery_pack_recipe(mmk_q[1]) })
+    data:extend({ make_artillery_pack_recipe(mma_q[1]) })
+
+    --technology
+    local q_rocketry =
     {
         type = "technology",
         name = "q-rocketry",
         icon_size = 256,
         icon = "__lilys-mm__/graphics/technology/q-rocketry.png",
-        prerequisites = { "mass-rocketry-2", "quantum-processor", "cryogenic-science-pack"},
+        prerequisites = { "mass-rocketry-2", "quantum-processor", "cryogenic-science-pack" },
         unit =
         {
             ingredients =
@@ -1432,7 +1668,7 @@ if (settings.startup["enable-q-homing"].value and mods["space-age"]) then
         }
     }
 
-    
+
     table.insert(q_rocketry.effects, {
         type = "unlock-recipe",
         recipe = "micromissile-incendiary-q"
@@ -1445,10 +1681,41 @@ if (settings.startup["enable-q-homing"].value and mods["space-age"]) then
         type = "unlock-recipe",
         recipe = "micromissile-incendiary-q-swarm-pack"
     })
-    
+    data.extend({ q_rocketry })
 
-    data.extend({q_rocketry})
 
+
+    local tech_q2 = table.deepcopy(data.raw["technology"]["q-rocketry"])
+    tech_q2.name = "q-artillery-rocketry"
+    tech_q2.icon = "__lilys-mm__/graphics/technology/q-rocketry.png"
+    tech_q2.icon_size = 256
+    tech_q2.prerequisites = { "q-rocketry", "mass-artillery-rocketry" }
+    tech_q2.unit.count = 10000
+    tech_q2.effects = {}
+
+    if mods["space-age"] then
+        table.insert(tech_q2.prerequisites, "metallurgic-science-pack")
+        table.insert(tech_q2.unit.ingredients, { "metallurgic-science-pack", 2 })
+    end
+
+    table.insert(tech_q2.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-explosive-q-artillery-pack"
+    })
+    table.insert(tech_q2.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-incendiary-q-artillery-pack"
+    })
+    table.insert(tech_q2.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-kinetic-q-artillery-pack"
+    })
+    table.insert(tech_q2.effects, {
+        type = "unlock-recipe",
+        recipe = "micromissile-arc-q-artillery-pack"
+    })
+
+
+    ---@diagnostic disable-next-line: assign-type-mismatch
+    data:extend({ tech_q2 })
 end
-
-
