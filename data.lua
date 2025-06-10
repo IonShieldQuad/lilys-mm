@@ -957,7 +957,7 @@ else
             name = "mass-rocketry",
             icon_size = 256,
             icon = "__lilys-mm__/graphics/technology/mass-rocketry.png",
-            prerequisites = { "rocketry, utility-science-pack", "rocket-fuel", "low-density-structure" },
+            prerequisites = { "rocketry", "utility-science-pack", "rocket-fuel", "low-density-structure" },
             unit =
             {
                 ingredients =
